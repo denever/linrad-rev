@@ -1,0 +1,312 @@
+AC_INIT(lmain.c)
+AC_MSG_CHECKING([OS])
+OS=`uname`
+AC_SUBST(OS, "${OS}")
+rm -f Makefile
+rm -f conf.h
+rm -f lconf.h
+rm -f rusage.h
+rm -f config.cache
+if test ${OS} = "Linux"; then
+AC_CHECK_FILE( /usr/lib/oss/soundcard.h, OSSN="1")
+AC_CHECK_FILE( /usr/local/lib/oss/soundcard.h, OSSN="3")
+AC_CHECK_FILE( /lib/oss/soundcard.h, OSSN="5")
+AC_CHECK_FILE( /var/lib/oss/soundcard.h, OSSN="7")
+AC_CHECK_FILE( /opt/oss/soundcard.h, OSSN="9")
+AC_CHECK_FILE( /root/oss/soundcard.h, OSSN="11")
+AC_CHECK_FILE( /usr/lib/oss/include/sys/soundcard.h, OSSN="2")
+AC_CHECK_FILE( /usr/local/lib/oss/include/sys/soundcard.h, OSSN="4")
+AC_CHECK_FILE( /lib/oss/include/sys/soundcard.h, OSSN="6")
+AC_CHECK_FILE( /var/lib/oss/include/sys/soundcard.h, OSSN="8")
+AC_CHECK_FILE( /opt/oss/include/sys/soundcard.h, OSSN="10")
+AC_CHECK_FILE( /root/oss/include/sys/soundcard.h, OSSN="12")
+AC_SUBST(OSSN)
+ALSAN="0"
+ALSAH="0"
+AC_CHECK_FILE( /usr/lib/libasound.so, ALSAN="1")
+AC_SUBST(ALSAN)
+AC_CHECK_FILE( /usr/lib/libasound.so, ALSALIB="-lasound")
+AC_SUBST(ALSALIB)
+AC_CHECK_FILE( /usr/include/alsa/asoundlib.h, ALSAH="1")
+AC_SUBST(ALSAH)
+if test -e "/proc/asound/version"; then
+alsaver=`(cut /proc/asound/version --characters=50-58)` 
+alsav3=`(echo $alsaver) | cut -d. -f3`
+ALSAK=`(echo $alsav3) | cut -c1`
+alsav32=`(echo $alsav3) | cut -c2`
+case $alsav32 in
+"0")
+ALSAM=0
+;;
+"1")
+ALSAM=1
+;;
+"2")
+ALSAM=2
+;;
+"3")
+ALSAM=3
+;;
+"4")
+ALSAM=4
+;;
+"5")
+ALSAM=5
+;;
+"6")
+ALSAM=6
+;;
+"7")
+ALSAM=7
+;;
+"8")
+ALSAM=8
+;;
+"9")
+ALSAM=9
+;;
+*)
+ALSAM=-1
+esac
+else
+ALSAM=-1
+fi
+AC_SUBST(ALSAM)
+AC_SUBST(ALSAK)
+AC_CHECK_FILE( /dev/dsp, SDEVPATH="1")
+AC_CHECK_FILE( /dev/sound/dsp, SDEVPATH="2")
+AC_SUBST(SDEVPATH)
+AC_CHECK_FILE( ./users_hwaredriver.c, LUSERHWDR="1")
+AC_SUBST(LUSERHWDR)
+AC_CHECK_FILE( ./users_hwaredriver.c, LDEPS1="users_hwaredriver.c")
+AC_SUBST(LDEPS1)
+AC_CHECK_FILE( ./wusers_hwaredriver.c, WUSERHWDR="1")
+AC_SUBST(WUSERHWDR)
+AC_CHECK_FILE( ./wusers_hwaredriver.c, WDEPS1="wusers_hwaredriver.c")
+AC_SUBST(WDEPS1)
+AC_CHECK_FILE( ./users_hwaredef.h, LUSERHWDEF="1")
+AC_SUBST(LUSERHWDEF)
+AC_CHECK_FILE( ./users_hwaredef.h, DEPS2="users_hwaredef.h")
+AC_SUBST(DEPS2)
+AC_CHECK_FILE( ./wusers_hwaredef.h, WUSERHWDEF="1")
+AC_SUBST(WUSERHWDEF)
+AC_CHECK_FILE( ./wusers_hwaredef.h, WDEPS4="wusers_hwaredef.h")
+AC_SUBST(WDEPS4)
+AC_CHECK_FILE( ./users_extra.c, USEREXTRA="1")
+AC_SUBST(USEREXTRA)
+AC_CHECK_FILE( ./users_extra.c, DEPS3="users_extra.c")
+AC_SUBST(DEPS3)
+INIT="/etc/rc.d"
+AC_CHECK_FILE( /etc/rc3.d/., INIT="/etc")
+AC_CHECK_FILE( /etc/init.d/rc3.d/., INIT="/etc/init.d")
+AC_CHECK_FILE( /etc/rc.d/rc3.d/., INIT="/etc/rc.d")
+AC_SUBST(INIT)
+fi
+AC_CHECK_HEADER([vgagl.h],, SVGALIB=NOT_PRESENT)
+AC_SUBST(SVGALIB)
+X11="NOT_PRESENT"
+AC_CHECK_HEADER([X11/Xlib.h],[X11=""])
+AC_CHECK_HEADER([/usr/PCBSD/local/include/X11/Xlib.h],[X11="-I/usr/PCBSD/local/include"])
+# The below line is to set the correct include under PC-BSD 7.1.1 where the
+# header check does not work.
+AC_CHECK_FILE([/usr/PCBSD/local/include/X11/Xlib.h],[X11="-I/usr/PCBSD/local/include"])
+AC_SUBST(X11)
+LIBEXT=0
+AC_CHECK_FILE( /emul/ia32-linux/usr/lib/libXext.so, LIBEXT="1")
+AC_CHECK_FILE( /usr/lib/libXext.so, LIBEXT="1")
+AC_CHECK_FILE( [libXext.so], LIBEXT="1")
+AC_CHECK_FILE( /usr/lib32/libXext.so, LIBEXT="1")
+AC_CHECK_FILE( /usr/PCBSD/local/lib/libXext.so, LIBEXT="1")
+if test "$LIBEXT" = "1"; then
+  IPC="1"
+  AC_CHECK_HEADER(sys/ipc.h,, IPC="0")
+  if test "$IPC" = "1"; then
+    XFUNC="0"
+    AC_CHECK_HEADER([X11/Xfuncproto.h], XFUNC="1")
+    AC_CHECK_HEADER(/usr/local/include/X11/Xfuncproto.h, XFUNC="1")
+    AC_CHECK_HEADER(/usr/PCBSD/local/include/X11/Xfuncproto.h, XFUNC="1")
+    if test "$XFUNC" = "1" ; then
+      EXT="0"
+      AC_PREPROC_IFELSE( [AC_LANG_PROGRAM([#include <X11/extensions/XShm.h>])],
+        EXT="1")
+      AC_CHECK_HEADER( /usr/PCBSD/local/include/X11/extensions/XShm.h,
+        EXT="1")
+      AC_CHECK_HEADER( /usr/local/include/X11/extensions/XShm.h,
+        EXT="1")
+# The header check does not work under PCBSD. Assume all is OK if
+# the file is present.
+      AC_CHECK_FILE( /usr/PCBSD/local/include/X11/extensions/XShm.h,
+        EXT="1")
+      AC_CHECK_FILE( /usr/local/include/X11/extensions/XShm.h, EXT="1")
+      if test "$EXT" = "1" ; then
+        SHMLIB="-lXext"
+        SHMIPC="1" 
+      fi
+    fi
+  fi
+fi
+AC_SUBST(SHMIPC)
+AC_SUBST(SHMLIB)
+if test ${OS} = "Linux"; then
+kerntot=`(uname -r) | cut -d- -f-1`
+kernver=`(echo $kerntot) | cut -d. -f-3`
+case `(uname -r) | cut -d. -f-2` in
+"2.2")
+RUSAGE=1
+SDR1422=sdr14
+SDR1424=no_use
+SDR1426=no_use2
+MODEXT=o
+;;
+"2.4")
+SDR1422=no_use2
+SDR1424=sdr14
+SDR1426=no_use
+RUSAGE=1
+MODEXT=o
+OSVER=1
+;;
+"2.6")
+RUSAGE=0
+SDR1426=sdr14
+SDR1424=no_use
+SDR1422=no_use2
+MODEXT=ko
+case `(echo $kerntot) | cut -d. -f-3` in
+"2.6.1")
+FT245PGM=ERROR
+RUSAGE=1
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.2")
+FT245PGM=ERROR
+RUSAGE=1
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.3")
+FT245PGM=ERROR
+RUSAGE=1
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.4")
+OSVER=2
+RUSAGE=1
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.5")
+OSVER=2
+RUSAGE=1
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.6")
+OSVER=4
+RUSAGE=1
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.7")
+OSVER=4
+RUSAGE=1
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.8")
+RUSAGE=0
+KERNEL_SUBDIRS=SUBDIRS
+case `(uname -r)` in
+"2.6.8-24-default")
+OSVER=4
+;;
+*)
+OSVER=2
+;;
+esac
+;;
+"2.6.9")
+OSVER=4
+RUSAGE=0
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.10")
+OSVER=4
+RUSAGE=0
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.11")
+OSVER=4
+RUSAGE=0
+KERNEL_SUBDIRS=SUBDIRS
+;;
+"2.6.12")
+OSVER=4
+RUSAGE=0
+KERNEL_SUBDIRS=M
+;;
+"2.6.13")
+OSVER=4
+RUSAGE=0
+KERNEL_SUBDIRS=M
+;;
+"2.6.14")
+OSVER=4
+RUSAGE=0
+KERNEL_SUBDIRS=M
+;;
+"2.6.15")
+OSVER=4
+RUSAGE=0
+KERNEL_SUBDIRS=M
+;;
+"2.6.16")
+OSVER=8
+RUSAGE=0
+KERNEL_SUBDIRS=M
+;;
+"2.6.17")
+OSVER=8
+RUSAGE=0
+KERNEL_SUBDIRS=M
+;;
+*)
+OSVER=8
+RUSAGE=0
+KERNEL_SUBDIRS=M
+;;
+esac
+;;
+*)
+RUSAGE=0
+echo "Unknown kernel version number: $kernver"
+echo "(extracted from: $kerntot)"  
+echo "No driver for SDR-14 available"
+;;
+esac
+AC_SUBST(SDR1426)
+AC_SUBST(SDR1424)
+AC_SUBST(SDR1422)
+AC_SUBST(MODEXT)
+if test "$ALSAN" = "0" ; then
+echo "You might consider installing ALSA"
+fi
+if test "$ALSAH" = "0" ; then
+echo "You might consider installing ALSA headers"
+fi
+AC_SUBST(KERNEL_SUBDIRS)
+AC_CHECK_FILE( /usr/src/linux, LINDIR="linux")
+AC_CHECK_FILE( /usr/src/linux-2.4, LINDIR="linux-2.4")
+AC_SUBST(LINDIR)
+AC_SUBST(FT245PGM) 
+AC_SUBST(OSVER) 
+else
+AC_CHECK_FILE( /dev/dsp, SDEVPATH="1")
+RUSAGE=0
+fi
+AC_SUBST(RUSAGE)
+AC_OUTPUT(Makefile conf.h lconf.h rusage.h ft245.c)
+rm -f *.o
+rm -f *.ol
+rm -f *.ow
+AC_PATH_PROG(NASM, nasm)
+if test "$NASM" = ""; then
+echo "The nasm package is missing. It must be installed."
+else
+echo "Normal End"
+fi

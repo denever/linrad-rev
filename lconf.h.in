@@ -1,0 +1,78 @@
+#if @OSSN@-1 == 0
+#include "/usr/lib/oss/soundcard.h"
+#define SOUND_OSS
+
+#elif @OSSN@-2 == 0
+#include "/usr/lib/oss/include/sys/soundcard.h"
+#define SOUND_OSS
+
+#elif @OSSN@-3 == 0
+#include "/usr/local/lib/oss/soundcard.h" 
+#define SOUND_OSS
+
+#elif @OSSN@-4 == 0
+#include "/usr/local/lib/oss/include/sys/soundcard.h" 
+#define SOUND_OSS
+
+#elif @OSSN@-5 == 0
+#include "/lib/oss/soundcard.h"
+#define SOUND_OSS
+
+#elif @OSSN@-6 == 0
+#include "/lib/oss/include/sys/soundcard.h"
+#define SOUND_OSS
+
+#elif @OSSN@-7 == 0
+#include "/var/lib/oss/soundcard.h" 
+#define SOUND_OSS
+
+#elif @OSSN@-8 == 0
+#include "/var/lib/oss/include/sys/soundcard.h" 
+#define SOUND_OSS
+
+#elif @OSSN@-9 == 0
+#include "/opt/oss/soundcard.h" 
+#define SOUND_OSS
+
+#elif @OSSN@-10 == 0
+#include "/opt/oss/include/sys/soundcard.h" 
+#define SOUND_OSS
+
+#elif @OSSN@-11 == 0
+#include "/root/oss/soundcard.h" 
+#define SOUND_OSS
+
+#elif @OSSN@-12 == 0
+#include "/root/oss/include/sys/soundcard.h" 
+#define SOUND_OSS
+
+#else
+#include <sys/soundcard.h>
+#endif
+#include <sys/ioctl.h>
+extern audio_buf_info da_info;
+
+#if @SDEVPATH@-1 == 0
+#define SND_DEV 1
+#elif @SDEVPATH@-2 == 0
+#define SND_DEV 2
+#else 
+#define SND_DEV 1
+#endif
+
+#if @ALSAN@-1 == 0
+#if @ALSAH@-1 == 0
+#if @ALSAM@ >= 0
+#if (10*@ALSAK@+@ALSAM@) > 11
+#define ALSA_PRESENT
+#endif
+#endif
+#endif
+#endif
+
+
+#if @SHMIPC@-1 == 0
+#define SHM_INSTALLED 1
+#else
+#define SHM_INSTALLED 0
+#endif

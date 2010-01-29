@@ -1,0 +1,62 @@
+
+extern _fft1_split_shi
+extern _fft1_first_point
+extern _fft1_last_point
+extern _fft1_float
+extern _fft1_size
+extern _liminfo
+extern _fft1_px
+extern _fft1_block
+extern _fft1_mask
+extern _fft1_back_scramble
+extern _fft1_mmxcosin
+extern _fft1_n
+extern _fft1_backbuffer
+extern _timf2_shi
+extern _timf2_pa
+extern _timf2_input_block
+extern _timf2_mask
+extern _timf2_pwr_int
+extern _fft1_interleave_points
+extern _fft1_inverted_mmxwin
+extern _rx_channels
+extern _fft1back_lowgain_n
+extern _fft1_lowlevel_points
+
+fft1_split_shi equ _fft1_split_shi
+fft1_first_point equ _fft1_first_point
+fft1_last_point equ _fft1_last_point
+fft1_float equ _fft1_float
+fft1_size equ _fft1_size
+liminfo equ _liminfo
+fft1_px equ _fft1_px
+fft1_block equ _fft1_block
+fft1_mask equ _fft1_mask
+fft1_back_scramble equ _fft1_back_scramble
+fft1_mmxcosin equ _fft1_mmxcosin
+fft1_n equ _fft1_n
+fft1_backbuffer equ _fft1_backbuffer
+timf2_shi equ _timf2_shi
+timf2_pa equ _timf2_pa
+timf2_input_block equ _timf2_input_block
+timf2_mask equ _timf2_mask
+timf2_pwr_int equ _timf2_pwr_int
+fft1_interleave_points equ _fft1_interleave_points
+fft1_inverted_mmxwin equ _fft1_inverted_mmxwin
+rx_channels equ _rx_channels
+fft1back_lowgain_n equ _fft1back_lowgain_n
+fft1_lowlevel_points equ _fft1_lowlevel_points
+
+global _split_two
+global _split_one
+global _mmx_fft1back_two
+global _mmx_fft1back_one
+global _fft1back_mmx_finish
+
+%include "split.s"
+
+_split_two equ split_two
+_split_one equ split_one
+_mmx_fft1back_two equ mmx_fft1back_two
+_mmx_fft1back_one equ mmx_fft1back_one
+_fft1back_mmx_finish equ fft1back_mmx_finish

@@ -1,0 +1,99 @@
+      ************* Debian Lenny Aug 2009 ********************
+
+A standard install does not provide a working C compiler so 
+when a Linrad install is attempted, the first run of the 
+configure script would look like this:
+
+deb:/home/dsp# ./configure
+checking for /usr/lib/oss/soundcard.h... no
+.
+.
+.
+checking for gcc... no
+checking for cc... no
+checking for cl.exe... no
+configure: error: no acceptable C compiler found in $PATH
+See onfig.log' for more details.
+deb:/home/dsp# 
+
+Fix this by installing gcc and libraries like this:
+sudo apt-get install gcc
+
+When running ./configure after having installed gcc one would
+get the following last lines:
+
+You might consider installing ALSA
+You might consider installing ALSA headers
+checking for /usr/bin/nasm... no
+The package nasm seems to be not installed.
+deb:/home/dsp# 
+
+It is necessary to install nasm:
+sudo apt-get install nasm
+
+If you are not going to use the sound system OSS from 4Front
+it is a good idea to install the package that allows native ALSA.
+sudo apt-get install libasound2-dev
+
+With these three packages the configure script ends without errors.
+config.status: creating Makefile
+config.status: creating conf.h
+config.status: creating lconf.h
+config.status: creating rusage.h
+config.status: creating ft245.c
+checking for /usr/bin/nasm... yes
+Normal End
+
+The command "make" is not available unless it is installed:
+sudo apt-get install make
+
+Trying "make xlinrad" now gives this result:
+deb:/home/dsp# make xlinrad
+ 
+	To compile for X11 you must install
+	the X11 development package and run configure again.
+ Debian, Ubuntu,...: apt-get install libX11-dev
+ Fedora: yum install libX11-devel
+ Mandriva, package libx11_6-devel
+ 
+deb:/home/dsp# 
+
+Do as suggested:
+sudo apt-get install libX11-dev
+and run ./configure again.
+
+Now make xlinrad will produce the executable without errors.
+
+When setting up the hardware related parameters you will now
+se the following message unless you select to start in
+"newcomer mode"
+
+*******************************************************************************
+The libraries for MIT-SHM are not installed.
+Debian: Install the packages libxext-dev and x11proto-xext-dev
+Fedora: Install the package libXext-devel[.i586])
+Then run ./configure and after that make xlinrad. Finally enable
+MIT-SHM in the 'S=Global parms set up' in the main menu of Linrad.
+*******************************************************************************
+
+With the Aug 2009 version of Debian Lenny it is enough to
+install like this:
+sudo apt-get install libxext-dev
+
+It is necessary to run "./configure" and "make xlibnrad" again.
+
+The above is intended to give an idea what the different packages do
+and how the Linrad install procedure tries to help. The information
+might be helpful under other distributions.
+
+To make it simple, just issue the following sequence of
+commands in a console window under X11:
+sudo apt-get install gcc
+sudo apt-get install nasm
+sudo apt-get install libasound2-dev
+sudo apt-get install make
+sudo apt-get install libxext-dev
+./configure
+make xlinrad
+./xlinrad 
+

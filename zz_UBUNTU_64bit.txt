@@ -1,0 +1,43 @@
+      ************* Ubuntu 9.04 ********************
+
+A standard install does provide a working C compiler, but nasm
+is not installed so when a Linrad install is attempted, the first
+run of the configure script would look like this:
+
+bsz@Ubu904:~/test$ ./configure
+checking for /usr/lib/oss/soundcard.h... no
+.
+.
+.
+You might consider installing ALSA
+You might consider installing ALSA headers
+checking for /usr/bin/nasm... no
+The package nasm seems to be not installed.
+bsz@Ubu904:~/test$ ls z*
+
+Make sure you have Internet access and type:
+sudo apt-get install nasm
+
+Linrad requires the 32 bit C compiler so you must also install 
+the gcc 32 bit packages:
+sudo apt-get install libc6-dev-i386
+sudo apt-get install ia32-libs
+sudo apt-get install lib32asound2-dev
+
+That is enough for xlinrad to compile. In case you want to
+use 4Front OSS it might be different, the configure script
+might not work properly so it might be necessary to change
+Makefile and lconf.h manually.
+
+When you get into the setup routine you might encounter this
+message:
+
+The libraries for MIT-SHM are not installed.
+Install the Debian packages libxext-dev and x11proto-xext-dev
+Fedora: libXext-devel(.i586)
+to enable MIT-SHM.
+
+You can install shared memory for the screen like this:
+sudo apt-get install x11proto-xext-dev
+
+This will allow you to select SHM and get a much faster display. 

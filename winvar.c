@@ -1,0 +1,106 @@
+
+#include "wdef.h"
+#include "globdef.h"
+#include "uidef.h"
+#include "fft1def.h"
+#include "fft2def.h"
+#include "fft3def.h"
+#include "screendef.h"
+#include "sigdef.h"
+#include "seldef.h"
+#include "blnkdef.h"
+#include "caldef.h"
+#include "txdef.h"
+#include "vernr.h"
+#include "keyboard_def.h"
+#include "thrdef.h"
+
+HANDLE sem_kill_all;
+HANDLE thread_handle_kill_all;
+DWORD thread_id_kill_all;
+HANDLE serport;
+int no_of_rx_wavein;
+RECT desktop_screen;
+HWND linrad_hwnd;
+int shift_key_status=0;
+HDC screen_hdc;
+HDC memory_hdc;
+HANDLE thread_handle_main_menu;
+DWORD thread_id_main_menu;
+HANDLE thread_handle_mouse;
+DWORD thread_id_mouse;
+DWORD thread_result;
+double internal_clock_frequency;
+LONG internal_clock_offset;
+HBITMAP memory_hbm;
+BITMAP memory_bm;
+unsigned char *mempix;
+int first_mempix;
+int last_mempix;
+HWAVEIN hwav_rxadin1;
+HWAVEIN hwav_rxadin2;
+HWAVEOUT hwav_rxdaout;
+HWAVEOUT hwav_txdaout;
+char wave_in_open_flag1;
+char wave_in_open_flag2;
+char *rx_wavein_buf;
+char *tx_wavein_buf;
+char *rx_waveout_buf;
+char *tx_waveout_buf;
+WAVEHDR *rx_wave_inhdr;
+WAVEHDR *rx_wave_outhdr;
+WAVEHDR *tx_wave_inhdr;
+WAVEHDR *tx_wave_outhdr;
+HANDLE rxin1_bufready;
+HANDLE rxin2_bufready;
+DWORD *rxadin1_newbuf;
+DWORD *rxadin2_newbuf;
+WAVEHDR *rxdaout_newbuf[NO_OF_RX_WAVEOUT];
+WAVEHDR *txdaout_newbuf[NO_OF_TX_WAVEOUT];
+int rxadin1_newbuf_ptr;
+int rxadin2_newbuf_ptr;
+int rxdaout_newbuf_ptr;
+int txdaout_newbuf_ptr;
+int parport_installed;
+inpfuncPtr inp32;
+oupfuncPtr oup32;
+HANDLE CurrentProcess;
+
+
+char *eme_own_info_filename={"C:\\emedir\\own_info"};
+char *eme_allcalls_filename={"C:\\emedir\\allcalls.dta"};
+char *eme_emedta_filename={"C:\\emedir\\eme.dta"};
+char *eme_dirskd_filename={"C:\\emedir\\dir.skd"};
+char *eme_dxdata_filename={"C:\\emedir\\linrad_dxdata"};
+char *eme_call3_filename={"C:\\emedir\\CALL3.TXT"};
+char *eme_error_report_file={"C:\\emedir\\location_errors.txt"};
+LPTHREAD_START_ROUTINE thread_routines[THREAD_MAX]=
+                   {winthread_rx_adinput,        //0
+                    winthread_rx_raw_netinput,   //1
+                    winthread_rx_fft1_netinput,  //2
+                    winthread_rx_file_input,     //3
+                    winthread_sdr14_input,       //4
+                    winthread_rx_output,         //5
+                    winthread_screen,            //6
+                    winthread_tx_input,          //7
+                    winthread_tx_output,         //8
+                    winthread_wideband_dsp,      //9
+                    winthread_narrowband_dsp,    //10
+                    winthread_user_command,      //11
+                    winthread_txtest,            //12
+                    winthread_powtim,            //13
+                    winthread_rx_adtest,         //14
+                    winthread_cal_iqbalance,     //15
+                    winthread_cal_interval,      //16
+                    winthread_cal_filtercorr,    //17
+                    winthread_tune,              //18
+                    winthread_lir_server,        //19
+                    winthread_perseus_input,     //20
+                    winthread_radar,             //21
+                    winthread_second_fft,        //22
+                    winthread_timf2              //23
+                    };        
+
+HANDLE thread_identifier[THREAD_MAX];
+HANDLE lirsem[MAX_LIRSEM];
+

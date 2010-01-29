@@ -1,0 +1,1061 @@
+#
+# -----------     Compilers     ----------------
+# Use gcc to compile files for Linux. 
+CC=gcc
+# Name the output files *.ol instead of *.o 
+# so we definitely know it is for Linux. 
+# (*.o files can be present by mistake) 
+LCC     = ${CC} -D_FILE_OFFSET_BITS=64 
+WCC	= /usr/bin/i586-mingw32msvc-gcc
+WINWCC  = C:\mingw\bin\mingw32-gcc
+NASM	= nasm
+WINNASM = C:\mingw\bin\nasm
+# Use the mingw cross compiler for Windows
+# Name the output files *.ow instead of *.o 
+# so we definitely know it is for Windows.
+# (*.o files can be present by mistake) 
+# Always use the same flags.
+CFL	= -g -O -DOSNUM=1 @X11@ -W -Wall -Wimplicit -Wreturn-type -Wformat \
+-m32 -Wunused -Wcomment -Wchar-subscripts -Wshadow -Wuninitialized \
+-Wparentheses -Wstrict-prototypes -Werror -ffast-math -Wundef \
+-fomit-frame-pointer -c -o
+
+CFW	= -g -O -DOSNUM=2 -W -Wall -Wimplicit -Wreturn-type -Wformat \
+-Wunused -Wcomment -Wchar-subscripts -Wshadow -Wuninitialized \
+-Wparentheses -Wstrict-prototypes -Werror -ffast-math -Wundef \
+-fomit-frame-pointer -c -o
+
+# Define dependencies for routines used both in Linux and Windows
+
+ADTEST=adtest.c globdef.h uidef.h fft1def.h screendef.h thrdef.h powtdef.h
+AFC_GRAPH=afc_graph.c globdef.h uidef.h fft1def.h fft2def.h vernr.h \
+	seldef.h llsqdef.h sigdef.h screendef.h thrdef.h
+AFCSUB=afcsub.c globdef.h uidef.h fft1def.h fft2def.h screendef.h vernr.h \
+	seldef.h llsqdef.h 
+BASEB_GRAPH=baseb_graph.c globdef.h uidef.h fft1def.h screendef.h vernr.h \
+	sigdef.h seldef.h fft2def.h fft3def.h graphcal.h thrdef.h options.h
+BUF=buf.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	seldef.h blnkdef.h sigdef.h hwaredef.h
+BLANK1=blank1.c globdef.h uidef.h screendef.h blnkdef.h fft1def.h fft2def.h
+BLNKVAR=blnkvar.c globdef.h blnkdef.h
+CALIBRATE=calibrate.c globdef.h uidef.h fft1def.h screendef.h caldef.h \
+	fft2def.h thrdef.h keyboard_def.h
+CALIQ=caliq.c globdef.h uidef.h fft1def.h caldef.h thrdef.h \
+	keyboard_def.h
+CALSUB2=calsub2.c globdef.h uidef.h fft1def.h fft2def.h llsqdef.h caldef.h \
+	keyboard_def.h
+CALSUB=calsub.c globdef.h uidef.h fft1def.h fft2def.h caldef.h thrdef.h
+CALVAR=calvar.c globdef.h caldef.h
+COH_OSC=coh_osc.c globdef.h uidef.h sigdef.h screendef.h fft1def.h
+COHERENT=coherent.c globdef.h uidef.h sigdef.h screendef.h fft3def.h \
+	options.h thrdef.h options.h
+COHSUB=cohsub.c globdef.h uidef.h sigdef.h screendef.h fft1def.h options.h
+CWSPEED=cwspeed.c globdef.h uidef.h sigdef.h screendef.h fft1def.h \
+	options.h llsqdef.h
+CWDETECT=cwdetect.c globdef.h uidef.h sigdef.h screendef.h fft1def.h \
+	options.h llsqdef.h fft3def.h
+EME=eme.c globdef.h uidef.h screendef.h keyboard_def.h thrdef.h
+FFT0=fft0.c globdef.h uidef.h 
+FFT1=fft1.c globdef.h uidef.h fft1def.h screendef.h caldef.h \
+	seldef.h thrdef.h options.h
+FFT1_COMPLEX=fft1_complex.c globdef.h uidef.h fft1def.h 
+FFT1_RE=fft1_re.c globdef.h uidef.h fft1def.h 
+FFT1VAR=fft1var.c globdef.h fft1def.h
+FFT2=fft2.c globdef.h uidef.h seldef.h fft1def.h fft2def.h screendef.h \
+	sigdef.h thrdef.h
+FFT2VAR=fft2var.c globdef.h fft2def.h
+FFT3=fft3.c globdef.h uidef.h seldef.h fft3def.h screendef.h sigdef.h \
+	thrdef.h
+FFT3VAR=fft3var.c globdef.h fft3def.h
+FONTS=fonts.c globdef.h uidef.h screendef.h
+FREQ_CONTROL=freq_control.c globdef.h uidef.h seldef.h screendef.h hwaredef.h \
+	fft1def.h thrdef.h perseusdef.h
+GIFSAVE=gifsave.c globdef.h uidef.h thrdef.h conf.h options.h
+HELP=help.c globdef.h uidef.h fft1def.h screendef.h seldef.h sigdef.h \
+	thrdef.h vernr.h rusage.h
+HIRES_GRAPH=hires_graph.c globdef.h uidef.h fft1def.h fft2def.h screendef.h \
+	blnkdef.h  seldef.h graphcal.h vernr.h thrdef.h sigdef.h
+HWAREDRIVER=hwaredriver.c globdef.h uidef.h hwaredef.h @DEPS2@ fft1def.h \
+	wse_sdrxx.c seldef.h screendef.h thrdef.h sdrdef.h conf.h txdef.h
+LLSQ=llsq.c globdef.h uidef.h llsqdef.h
+LLSQVAR=llsqvar.c globdef.h llsqdef.h
+KEYBOARD_VAR=keyboard_var.c keyboard_def.h
+MENU=menu.c globdef.h uidef.h fft1def.h fft2def.h screendef.h powtdef.h \
+	vernr.h sigdef.h seldef.h thrdef.h sdrdef.h caldef.h conf.h \
+	keyboard_def.h txdef.h options.h
+METER_GRAPH=meter_graph.c globdef.h uidef.h sigdef.h screendef.h \
+	thrdef.h vernr.h
+MIX1=mix1.c globdef.h uidef.h seldef.h fft1def.h fft2def.h fft3def.h \
+	screendef.h sigdef.h
+MIX2=mix2.c globdef.h uidef.h fft1def.h fft3def.h sigdef.h seldef.h \
+	screendef.h
+MODESUB=modesub.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h thrdef.h \
+	@DEPS2@ seldef.h sigdef.h screendef.h vernr.h conf.h options.h \
+	keyboard_def.h blnkdef.h caldef.h txdef.h rusage.h
+MORSE=morse.c globdef.h uidef.h fft1def.h sigdef.h screendef.h
+MOUSE=mouse.c globdef.h uidef.h screendef.h keyboard_def.h thrdef.h
+NETWORK=network.c globdef.h uidef.h fft1def.h screendef.h fft2def.h vernr.h \
+	caldef.h thrdef.h keyboard_def.h seldef.h options.h
+PALETTE=palette.c globdef.h screendef.h
+POL_GRAPH=pol_graph.c globdef.h uidef.h screendef.h thrdef.h vernr.h
+POWTIM=powtim.c globdef.h uidef.h sigdef.h fft1def.h fft2def.h screendef.h \
+	thrdef.h seldef.h powtdef.h
+POWTVAR=powtvar.c powtdef.h
+RADAR=radar.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h conf.h hwaredef.h thrdef.h rusage.h \
+	keyboard_def.h options.h blnkdef.h txdef.h
+RXIN=rxin.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h hwaredef.h thrdef.h rusage.h options.h
+SCREEN=screen.c globdef.h uidef.h screendef.h fft1def.h fft2def.h fft3def.h \
+	blnkdef.h sigdef.h seldef.h thrdef.h rusage.h hwaredef.h @DEPS3@ \
+	conf.h txdef.h options.h
+SCREENSUB=screensub.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h \
+	seldef.h graphcal.h screendef.h sigdef.h thrdef.h options.h
+SCREENVAR=screenvar.c globdef.h screendef.h
+SDR14=sdr14.c globdef.h uidef.h sdrdef.h thrdef.h fft1def.h screendef.h \
+	hwaredef.h vernr.h rusage.h options.h
+SDRVAR=sdrvar.c sdrdef.h
+SELLIM=sellim.c globdef.h uidef.h fft1def.h fft2def.h screendef.h seldef.h
+SELVAR=selvar.c globdef.h seldef.h
+SIGVAR=sigvar.c globdef.h sigdef.h
+SPUR=spur.c globdef.h uidef.h fft1def.h fft2def.h screendef.h seldef.h \
+	sigdef.h thrdef.h
+SPURSUB=spursub.c globdef.h uidef.h fft1def.h fft2def.h screendef.h seldef.h
+THRVAR=thrvar.c globdef.h thrdef.h rusage.h
+TXVAR=txvar.c globdef.h txdef.h
+UI=ui.c globdef.h uidef.h screendef.h vernr.h sigdef.h fft1def.h \
+	thrdef.h caldef.h powtdef.h keyboard_def.h rusage.h sdrdef.h
+UIVAR=uivar.c globdef.h uidef.h
+TIMING=timing.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h sigdef.h \
+	screendef.h thrdef.h
+TIMF2=timf2.c globdef.h uidef.h fft1def.h  
+TUNE=tune.c globdef.h uidef.h fft1def.h fft3def.h screendef.h sigdef.h \
+	seldef.h hwaredef.h @DEPS2@ caldef.h thrdef.h
+TX=tx.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h thrdef.h txdef.h vernr.h hwaredef.h \
+	options.h keyboard_def.h
+TX_GRAPH=tx_graph.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h \
+	screendef.h sigdef.h seldef.h thrdef.h txdef.h vernr.h hwaredef.h \
+	keyboard_def.h
+TXSSB=txssb.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h \
+	screendef.h sigdef.h seldef.h thrdef.h txdef.h vernr.h hwaredef.h \
+	sdrdef.h keyboard_def.h
+TXTEST=txtest.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h thrdef.h 
+WCW=wcw.c globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h conf.h hwaredef.h thrdef.h rusage.h \
+	keyboard_def.h options.h blnkdef.h txdef.h
+WIDE_GRAPH=wide_graph.c globdef.h uidef.h fft1def.h fft2def.h \
+	screendef.h seldef.h graphcal.h vernr.h sigdef.h thrdef.h
+WXSYS=wxsys.c globdef.h uidef.h thrdef.h keyboard_def.h
+
+# ----------  WELCOME MESSAGE FOR THE NEWCOMER ------------------
+default:
+	@echo ""
+	@echo ""
+	@echo "II-------- When running under Microsoft Windows --------II"
+	@echo "II   Install nasm and mingw32 in the folder C:\mingw32  II"  
+	@echo "II     Type: C:\mingw32\bin\mingw32-make winlinrad      II"
+	@echo "II                This will give linrad.exe             II"
+	@echo "II------------------------------------------------------II"
+	@echo ""
+	@echo ""
+	@echo "-------------- When running under Linux	--------------------------"
+	@echo ""
+	@echo "To produce a Linrad executable, do one of the following:"
+	@echo "make linrad     - Linrad for Linux with svgalib in terminal mode."
+	@echo "make xlinrad      Linrad for Linux under X11" 
+	@echo "make linrad.exe - Cross compile Linrad for Windows."
+	@echo "                     mingw32 has to be installed."
+	@echo ""
+	@echo "To produce scripts that install modules at boot time."
+	@echo "(Reboot after sucessful completion of these commands)"
+	@echo "make svgalib    - For svgalib to run as a normal user."
+	@echo "                    svgalib_helper must be in/etc/linrad/xxxx"
+	@echo "make sdr14      - To use the SDR-14 from RFSPACE"
+	@echo "-------------------------------------------------------------------"
+
+# ---------- Windows specific things compiling under Windows ---------------
+winlinrad : Makefile wmain.oz keyboard_var.oz uivar.oz fft1var.oz \
+fft3var.oz txvar.oz blnkvar.oz sigvar.oz calvar.oz screenvar.oz sdrvar.oz \
+selvar.oz ui.oz palette.oz menu.oz fft2var.oz thrvar.oz modesub.oz \
+blank1.oz buf.oz afcsub.oz afc_graph.oz adtest.oz powtvar.oz llsqvar.oz \
+calibrate.oz calsub.oz calsub2.oz caliq.oz coh_osc.oz coherent.oz \
+cohsub.oz cwspeed.oz cwdetect.oz eme.oz fft0.oz fft1.oz fft1_complex.oz \
+fft1_re.oz fft2.oz fft3.oz spur.oz spursub.oz hwaredriver.oz screensub.oz \
+freq_control.oz gifsave.oz help.oz hires_graph.oz llsq.oz baseb_graph.oz \
+mix1.oz mix2.oz morse.oz mouse.oz pol_graph.oz powtim.oz rxin.oz screen.oz \
+timing.oz timf2.oz tune.oz txtest.oz wcw.oz radar.oz wide_graph.oz split.oz \
+network.oz sdr14.oz sellim.oz simdasm.oz getiq.oz fftasm.oz hware.oz \
+fft2mmxa.oz fft2mmxb.oz fft2mmxc.oz wsys.oz winvar.oz wsetad.oz fonts.oz \
+meter_graph.oz tx.oz tx_graph.oz txssb.oz wxsys.oz perseus.oz
+
+	$(WINWCC) -mwindows -mconsole \
+-olinrad.exe -Wl,-s,-Map,linrad.wmap,-warn-common \
+wmain.oz keyboard_var.oz uivar.oz fft1var.oz fft3var.oz txvar.oz ui.oz \
+blnkvar.oz sigvar.oz screenvar.oz sdrvar.oz calvar.oz selvar.oz palette.oz \
+thrvar.oz fft2var.oz menu.oz modesub.oz blank1.oz powtvar.oz llsqvar.oz \
+calibrate.oz calsub.oz calsub2.oz caliq.oz buf.oz afcsub.oz afc_graph.oz \
+adtest.oz coh_osc.oz coherent.oz cohsub.oz cwspeed.oz cwdetect.oz spur.oz \
+eme.oz fft0.oz fft1.oz fft1_complex.oz fft1_re.oz fft2.oz fft3.oz llsq.oz \
+freq_control.oz gifsave.oz help.oz hires_graph.oz spursub.oz timf2.oz \
+mix1.oz mix2.oz morse.oz mouse.oz pol_graph.oz powtim.oz rxin.oz screen.oz \
+timing.oz tune.oz txtest.oz wcw.oz wide_graph.oz hwaredriver.oz fftasm.oz \
+fft2mmxa.oz fft2mmxb.oz fft2mmxc.oz simdasm.oz getiq.oz wsys.oz hware.oz \
+split.oz baseb_graph.oz network.oz sdr14.oz sellim.oz wsetad.oz fonts.oz \
+meter_graph.oz screensub.oz wxsys.oz winvar.oz perseus.oz radar.oz \
+tx.oz tx_graph.oz txssb.oz -lws2_32 -lgdi32 -lwinmm
+
+split.oz: split.sw split.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s split.sw -o split.oz
+fft2mmxa.oz: fft2mmxa.sw fft2mmxa.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s fft2mmxa.sw -o fft2mmxa.oz
+fft2mmxb.oz: fft2mmxb.sw fft2mmxb.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s fft2mmxb.sw -o fft2mmxb.oz
+fft2mmxc.oz: fft2mmxc.sw fft2mmxc.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s fft2mmxc.sw -o fft2mmxc.oz
+fftasm.oz: fftasm.sw fftasm.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s fftasm.sw -o fftasm.oz
+getiq.oz: getiq.sw getiq.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s getiq.sw -o getiq.oz
+simdasm.oz: simdasm.sw simdasm.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s simdasm.sw -o simdasm.oz
+hware.oz: hware.s
+	$(WINNASM) -w-orphan-labels -fwin32 -s hware.s -o hware.oz
+
+wsys.oz: wsys.c wdef.h globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h blnkdef.h caldef.h txdef.h \
+	vernr.h keyboard_def.h thrdef.h hwaredef.h
+	$(WINWCC) wsys.c $(CFW) wsys.oz
+wxsys.oz: $(WXSYS) 
+	$(WINWCC) wxsys.c $(CFW) wxsys.oz
+wmain.oz: wmain.c wdef.h globdef.h uidef.h screendef.h \
+	vernr.h options.h keyboard_def.h thrdef.h
+	$(WINWCC) wmain.c $(CFW) wmain.oz
+winvar.oz: winvar.c wdef.h globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h blnkdef.h caldef.h txdef.h \
+	vernr.h keyboard_def.h thrdef.h
+	$(WINWCC) winvar.c $(CFW) winvar.oz
+wsetad.oz: wsetad.c wdef.h globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h blnkdef.h caldef.h sdrdef.h txdef.h perseusdef.h \
+	hwaredef.h vernr.h keyboard_def.h thrdef.h dlldef.h options.h
+	$(WINWCC) wsetad.c $(CFW) wsetad.oz
+perseus.oz: perseus.c perseusdef.h globdef.h uidef.h fft1def.h  vernr.h \
+	thrdef.h sdrdef.h screendef.h hwaredef.h rusage.h
+	$(WINWCC) perseus.c $(CFW) perseus.oz
+
+
+
+adtest.oz : $(ADTEST)
+	$(WINWCC) adtest.c $(CFW) adtest.oz
+afc_graph.oz : $(AFC_GRAPH)
+	$(WINWCC) afc_graph.c $(CFW) afc_graph.oz
+afcsub.oz : $(AFCSUB)
+	$(WINWCC) afcsub.c $(CFW) afcsub.oz
+baseb_graph.oz : $(BASEB_GRAPH)
+	$(WINWCC) baseb_graph.c $(CFW) baseb_graph.oz
+buf.oz : $(BUF)
+	$(WINWCC) buf.c $(CFW) buf.oz
+blank1.oz : $(BLANK1)
+	$(WINWCC) blank1.c $(CFW) blank1.oz
+blnkvar.oz : $(BLNKVAR)
+	$(WINWCC) blnkvar.c $(CFW) blnkvar.oz
+calibrate.oz : $(CALIBRATE)
+	$(WINWCC) calibrate.c $(CFW) calibrate.oz
+caliq.oz : $(CALIQ)
+	$(WINWCC) caliq.c $(CFW) caliq.oz
+calsub.oz : $(CALSUB)
+	$(WINWCC) calsub.c $(CFW) calsub.oz
+calsub2.oz : $(CALSUB2)
+	$(WINWCC) calsub2.c $(CFW) calsub2.oz
+calvar.oz : $(CALVAR)
+	$(WINWCC) calvar.c $(CFW) calvar.oz
+coh_osc.oz : $(COH_OSC)
+	$(WINWCC) coh_osc.c $(CFW) coh_osc.oz
+coherent.oz : $(COHERENT)
+	$(WINWCC) coherent.c $(CFW) coherent.oz
+cohsub.oz : $(COHSUB)
+	$(WINWCC) cohsub.c $(CFW) cohsub.oz
+cwspeed.oz : $(CWSPEED)
+	$(WINWCC) cwspeed.c $(CFW) cwspeed.oz
+cwdetect.oz : $(CWDETECT)
+	$(WINWCC) cwdetect.c $(CFW) cwdetect.oz
+eme.oz : $(EME)
+	$(WINWCC) eme.c $(CFW) eme.oz
+fft0.oz : $(FFT0)
+	$(WINWCC) fft0.c $(CFW) fft0.oz
+fft1.oz : $(FFT1)
+	$(WINWCC) fft1.c $(CFW) fft1.oz
+fft1_complex.oz : $(FFT1_COMPLEX)
+	$(WINWCC) fft1_complex.c $(CFW) fft1_complex.oz
+fft1_re.oz : $(FFT1_RE)
+	$(WINWCC) fft1_re.c $(CFW) fft1_re.oz
+fft1var.oz : $(FFT1VAR)
+	$(WINWCC) fft1var.c $(CFW) fft1var.oz
+fft2.oz : $(FFT2)
+	$(WINWCC) fft2.c $(CFW) fft2.oz
+fft2var.oz : $(FFT2VAR)
+	$(WINWCC) fft2var.c $(CFW) fft2var.oz
+fft3.oz : $(FFT3)
+	$(WINWCC) fft3.c $(CFW) fft3.oz
+fft3var.oz : $(FFT3VAR)
+	$(WINWCC) fft3var.c $(CFW) fft3var.oz
+fonts.oz : $(FONTS)
+	$(WINWCC) fonts.c $(CFW) fonts.oz
+freq_control.oz : $(FREQ_CONTROL) @WDEPS4@ 
+	$(WINWCC) freq_control.c $(CFW) freq_control.oz
+gifsave.oz : $(GIFSAVE)
+	$(WINWCC) gifsave.c $(CFW) gifsave.oz
+help.oz : $(HELP)
+	$(WINWCC) help.c $(CFW) help.oz
+hires_graph.oz : $(HIRES_GRAPH)
+	$(WINWCC) hires_graph.c $(CFW) hires_graph.oz
+hwaredriver.oz : $(HWAREDRIVER) @WDEPS1@ wdef.h 
+	$(WINWCC) hwaredriver.c $(CFW) hwaredriver.oz
+keyboard_var.oz: $(KEYBOARD_VAR)
+	$(WINWCC) keyboard_var.c $(CFW) keyboard_var.oz
+llsq.oz : $(LLSQ)
+	$(WINWCC) llsq.c $(CFW) llsq.oz
+llsqvar.oz : $(LLSQVAR)
+	$(WINWCC) llsqvar.c $(CFW) llsqvar.oz
+menu.oz : $(MENU)
+	$(WINWCC) menu.c $(CFW) menu.oz
+meter_graph.oz : $(METER_GRAPH)
+	$(WINWCC) meter_graph.c $(CFW) meter_graph.oz
+mix1.oz : $(MIX1)
+	$(WINWCC) mix1.c $(CFW) mix1.oz
+mix2.oz : $(MIX2)
+	$(WINWCC) mix2.c $(CFW) mix2.oz
+modesub.oz : $(MODESUB)
+	$(WINWCC) modesub.c $(CFW) modesub.oz
+morse.oz : $(MORSE)
+	$(WINWCC) morse.c $(CFW) morse.oz
+mouse.oz : $(MOUSE)
+	$(WINWCC) mouse.c $(CFW) mouse.oz
+network.oz : $(NETWORK) 
+	$(WINWCC) network.c $(CFW) network.oz
+palette.oz : $(PALETTE)
+	$(WINWCC) palette.c $(CFW) palette.oz
+pol_graph.oz : $(POL_GRAPH)
+	$(WINWCC) pol_graph.c $(CFW) pol_graph.oz
+powtim.oz : $(POWTIM)
+	$(WINWCC) powtim.c $(CFW) powtim.oz
+powtvar.oz : $(POWTVAR)
+	$(WINWCC) powtvar.c $(CFW) powtvar.oz
+radar.oz : $(RADAR)
+	$(WINWCC) radar.c $(CFW) radar.oz
+rxin.oz : $(RXIN)
+	$(WINWCC) rxin.c $(CFW) rxin.oz
+screen.oz : $(SCREEN)
+	$(WINWCC) screen.c $(CFW) screen.oz
+screensub.oz : $(SCREENSUB)
+	$(WINWCC) screensub.c $(CFW) screensub.oz
+screenvar.oz : $(SCREENVAR)
+	$(WINWCC) screenvar.c $(CFW) screenvar.oz
+sdrvar.oz : $(SDRVAR)
+	$(WINWCC) sdrvar.c $(CFW) sdrvar.oz
+selvar.oz : $(SELVAR)
+	$(WINWCC) selvar.c $(CFW) selvar.oz
+sigvar.oz : $(SIGVAR)
+	$(WINWCC) sigvar.c $(CFW) sigvar.oz
+spur.oz : $(SPUR)
+	$(WINWCC) spur.c $(CFW) spur.oz
+spursub.oz : $(SPURSUB)
+	$(WINWCC) spursub.c $(CFW) spursub.oz
+thrvar.oz : $(THRVAR)
+	$(WINWCC) thrvar.c $(CFW) thrvar.oz
+txvar.oz:  $(TXVAR) 
+	$(WINWCC) txvar.c $(CFW) txvar.oz
+ui.oz : $(UI) 
+	$(WINWCC) ui.c $(CFW) ui.oz
+uivar.oz:  $(UIVAR) 
+	$(WINWCC) uivar.c $(CFW) uivar.oz
+timing.oz : $(TIMING)
+	$(WINWCC) timing.c $(CFW) timing.oz
+timf2.oz : $(TIMF2)
+	$(WINWCC) timf2.c $(CFW) timf2.oz
+tune.oz : $(TUNE)
+	$(WINWCC) tune.c $(CFW) tune.oz
+tx.oz : $(TX)
+	$(WINWCC) tx.c $(CFW) tx.oz
+tx_graph.oz : $(TX_GRAPH)
+	$(WINWCC) tx_graph.c $(CFW) tx_graph.oz
+txssb.oz : $(TXSSB)
+	$(WINWCC) txssb.c $(CFW) txssb.oz
+txtest.oz : $(TXTEST)
+	$(WINWCC) txtest.c $(CFW) txtest.oz
+wcw.oz : $(WCW)
+	$(WINWCC) wcw.c $(CFW) wcw.oz
+wide_graph.oz : $(WIDE_GRAPH)
+	$(WINWCC) wide_graph.c $(CFW) wide_graph.oz
+sdr14.oz : $(SDR14)
+	$(WINWCC) sdr14.c $(CFW) sdr14.oz
+sellim.oz : $(SELLIM)
+	$(WINWCC) sellim.c $(CFW) sellim.oz
+
+
+
+# ---------- Windows specific things compiling under Linux ---------------
+linrad.exe : Makefile wmain.ow keyboard_var.ow uivar.ow fft1var.ow \
+fft3var.ow txvar.ow blnkvar.ow sigvar.ow calvar.ow screenvar.ow sdrvar.ow \
+selvar.ow ui.ow palette.ow menu.ow fft2var.ow thrvar.ow modesub.ow \
+blank1.ow buf.ow afcsub.ow afc_graph.ow adtest.ow powtvar.ow llsqvar.ow \
+calibrate.ow calsub.ow calsub2.ow caliq.ow coh_osc.ow coherent.ow \
+cohsub.ow cwspeed.ow cwdetect.ow eme.ow fft0.ow fft1.ow fft1_complex.ow \
+fft1_re.ow fft2.ow fft3.ow spur.ow spursub.ow hwaredriver.ow screensub.ow \
+freq_control.ow gifsave.ow help.ow hires_graph.ow llsq.ow baseb_graph.ow \
+mix1.ow mix2.ow morse.ow mouse.ow pol_graph.ow powtim.ow rxin.ow screen.ow \
+timing.ow timf2.ow tune.ow txtest.ow wcw.ow radar.ow wide_graph.ow split.ow \
+network.ow sdr14.ow sellim.ow simdasm.ow getiq.ow fftasm.ow hware.ow \
+fft2mmxa.ow fft2mmxb.ow fft2mmxc.ow wsys.ow winvar.ow wsetad.ow fonts.ow \
+meter_graph.ow tx.ow tx_graph.ow txssb.ow wxsys.ow perseus.ow
+
+	$(WCC) \
+-olinrad.exe -Wl,-s,-Map,linrad.wmap,-warn-common \
+wmain.ow keyboard_var.ow uivar.ow fft1var.ow fft3var.ow txvar.ow ui.ow \
+blnkvar.ow sigvar.ow screenvar.ow sdrvar.ow calvar.ow selvar.ow palette.ow \
+thrvar.ow fft2var.ow menu.ow modesub.ow blank1.ow powtvar.ow llsqvar.ow \
+calibrate.ow calsub.ow calsub2.ow caliq.ow buf.ow afcsub.ow afc_graph.ow \
+adtest.ow coh_osc.ow coherent.ow cohsub.ow cwspeed.ow cwdetect.ow spur.ow \
+eme.ow fft0.ow fft1.ow fft1_complex.ow fft1_re.ow fft2.ow fft3.ow llsq.ow \
+freq_control.ow gifsave.ow help.ow hires_graph.ow spursub.ow timf2.ow \
+mix1.ow mix2.ow morse.ow mouse.ow pol_graph.ow powtim.ow rxin.ow screen.ow \
+timing.ow tune.ow txtest.ow wcw.ow wide_graph.ow hwaredriver.ow fftasm.ow \
+fft2mmxa.ow fft2mmxb.ow fft2mmxc.ow simdasm.ow getiq.ow wsys.ow hware.ow \
+split.ow baseb_graph.ow network.ow sdr14.ow sellim.ow wsetad.ow fonts.ow \
+meter_graph.ow screensub.ow wxsys.ow winvar.ow perseus.ow radar.ow \
+tx.ow tx_graph.ow txssb.ow -lws2_32 -lgdi32 -lwinmm
+
+split.ow: split.sw split.s
+	$(NASM) -w-orphan-labels -fwin32 -s split.sw -o split.ow
+fft2mmxa.ow: fft2mmxa.sw fft2mmxa.s
+	$(NASM) -w-orphan-labels -fwin32 -s fft2mmxa.sw -o fft2mmxa.ow
+fft2mmxb.ow: fft2mmxb.sw fft2mmxb.s
+	$(NASM) -w-orphan-labels -fwin32 -s fft2mmxb.sw -o fft2mmxb.ow
+fft2mmxc.ow: fft2mmxc.sw fft2mmxc.s
+	$(NASM) -w-orphan-labels -fwin32 -s fft2mmxc.sw -o fft2mmxc.ow
+fftasm.ow: fftasm.sw fftasm.s
+	$(NASM) -w-orphan-labels -fwin32 -s fftasm.sw -o fftasm.ow
+getiq.ow: getiq.sw getiq.s
+	$(NASM) -w-orphan-labels -fwin32 -s getiq.sw -o getiq.ow
+simdasm.ow: simdasm.sw simdasm.s
+	$(NASM) -w-orphan-labels -fwin32 -s simdasm.sw -o simdasm.ow
+hware.ow: hware.s
+	$(NASM) -w-orphan-labels -fwin32 -s hware.s -o hware.ow
+
+wsys.ow: wsys.c wdef.h globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h blnkdef.h caldef.h txdef.h \
+	vernr.h keyboard_def.h thrdef.h hwaredef.h
+	$(WCC) wsys.c $(CFW) wsys.ow
+wxsys.ow: $(WXSYS) 
+	$(WCC) wxsys.c $(CFW) wxsys.ow
+wmain.ow: wmain.c wdef.h globdef.h uidef.h screendef.h \
+	vernr.h options.h keyboard_def.h thrdef.h
+	$(WCC) wmain.c $(CFW) wmain.ow
+winvar.ow: winvar.c wdef.h globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h blnkdef.h caldef.h txdef.h \
+	vernr.h keyboard_def.h thrdef.h
+	$(WCC) winvar.c $(CFW) winvar.ow
+wsetad.ow: wsetad.c wdef.h globdef.h uidef.h fft1def.h fft2def.h fft3def.h screendef.h \
+	sigdef.h seldef.h blnkdef.h caldef.h sdrdef.h txdef.h \
+	hwaredef.h vernr.h keyboard_def.h thrdef.h dlldef.h options.h
+	$(WCC) wsetad.c $(CFW) wsetad.ow
+perseus.ow: perseus.c perseusdef.h 
+	$(WCC) perseus.c $(CFW) perseus.ow
+
+
+adtest.ow : $(ADTEST)
+	$(WCC) adtest.c $(CFW) adtest.ow
+afc_graph.ow : $(AFC_GRAPH)
+	$(WCC) afc_graph.c $(CFW) afc_graph.ow
+afcsub.ow : $(AFCSUB)
+	$(WCC) afcsub.c $(CFW) afcsub.ow
+baseb_graph.ow : $(BASEB_GRAPH)
+	$(WCC) baseb_graph.c $(CFW) baseb_graph.ow
+buf.ow : $(BUF)
+	$(WCC) buf.c $(CFW) buf.ow
+blank1.ow : $(BLANK1)
+	$(WCC) blank1.c $(CFW) blank1.ow
+blnkvar.ow : $(BLNKVAR)
+	$(WCC) blnkvar.c $(CFW) blnkvar.ow
+calibrate.ow : $(CALIBRATE)
+	$(WCC) calibrate.c $(CFW) calibrate.ow
+caliq.ow : $(CALIQ)
+	$(WCC) caliq.c $(CFW) caliq.ow
+calsub.ow : $(CALSUB)
+	$(WCC) calsub.c $(CFW) calsub.ow
+calsub2.ow : $(CALSUB2)
+	$(WCC) calsub2.c $(CFW) calsub2.ow
+calvar.ow : $(CALVAR)
+	$(WCC) calvar.c $(CFW) calvar.ow
+coh_osc.ow : $(COH_OSC)
+	$(WCC) coh_osc.c $(CFW) coh_osc.ow
+coherent.ow : $(COHERENT)
+	$(WCC) coherent.c $(CFW) coherent.ow
+cohsub.ow : $(COHSUB)
+	$(WCC) cohsub.c $(CFW) cohsub.ow
+cwspeed.ow : $(CWSPEED)
+	$(WCC) cwspeed.c $(CFW) cwspeed.ow
+cwdetect.ow : $(CWDETECT)
+	$(WCC) cwdetect.c $(CFW) cwdetect.ow
+eme.ow : $(EME)
+	$(WCC) eme.c $(CFW) eme.ow
+fft0.ow : $(FFT0)
+	$(WCC) fft0.c $(CFW) fft0.ow
+fft1.ow : $(FFT1)
+	$(WCC) fft1.c $(CFW) fft1.ow
+fft1_complex.ow : $(FFT1_COMPLEX)
+	$(WCC) fft1_complex.c $(CFW) fft1_complex.ow
+fft1_re.ow : $(FFT1_RE)
+	$(WCC) fft1_re.c $(CFW) fft1_re.ow
+fft1var.ow : $(FFT1VAR)
+	$(WCC) fft1var.c $(CFW) fft1var.ow
+fft2.ow : $(FFT2)
+	$(WCC) fft2.c $(CFW) fft2.ow
+fft2var.ow : $(FFT2VAR)
+	$(WCC) fft2var.c $(CFW) fft2var.ow
+fft3.ow : $(FFT3)
+	$(WCC) fft3.c $(CFW) fft3.ow
+fft3var.ow : $(FFT3VAR)
+	$(WCC) fft3var.c $(CFW) fft3var.ow
+fonts.ow : $(FONTS)
+	$(WCC) fonts.c $(CFW) fonts.ow
+freq_control.ow : $(FREQ_CONTROL) @WDEPS4@ 
+	$(WCC) freq_control.c $(CFW) freq_control.ow
+gifsave.ow : $(GIFSAVE)
+	$(WCC) gifsave.c $(CFW) gifsave.ow
+help.ow : $(HELP)
+	$(WCC) help.c $(CFW) help.ow
+hires_graph.ow : $(HIRES_GRAPH)
+	$(WCC) hires_graph.c $(CFW) hires_graph.ow
+hwaredriver.ow : $(HWAREDRIVER) @WDEPS1@ wdef.h 
+	$(WCC) hwaredriver.c $(CFW) hwaredriver.ow
+keyboard_var.ow: $(KEYBOARD_VAR)
+	$(WCC) keyboard_var.c $(CFW) keyboard_var.ow
+llsq.ow : $(LLSQ)
+	$(WCC) llsq.c $(CFW) llsq.ow
+llsqvar.ow : $(LLSQVAR)
+	$(WCC) llsqvar.c $(CFW) llsqvar.ow
+menu.ow : $(MENU)
+	$(WCC) menu.c $(CFW) menu.ow
+meter_graph.ow : $(METER_GRAPH)
+	$(WCC) meter_graph.c $(CFW) meter_graph.ow
+mix1.ow : $(MIX1)
+	$(WCC) mix1.c $(CFW) mix1.ow
+mix2.ow : $(MIX2)
+	$(WCC) mix2.c $(CFW) mix2.ow
+modesub.ow : $(MODESUB)
+	$(WCC) modesub.c $(CFW) modesub.ow
+morse.ow : $(MORSE)
+	$(WCC) morse.c $(CFW) morse.ow
+mouse.ow : $(MOUSE)
+	$(WCC) mouse.c $(CFW) mouse.ow
+network.ow : $(NETWORK) 
+	$(WCC) network.c $(CFW) network.ow
+palette.ow : $(PALETTE)
+	$(WCC) palette.c $(CFW) palette.ow
+pol_graph.ow : $(POL_GRAPH)
+	$(WCC) pol_graph.c $(CFW) pol_graph.ow
+powtim.ow : $(POWTIM)
+	$(WCC) powtim.c $(CFW) powtim.ow
+powtvar.ow : $(POWTVAR)
+	$(WCC) powtvar.c $(CFW) powtvar.ow
+radar.ow : $(RADAR)
+	$(WCC) radar.c $(CFW) radar.ow
+rxin.ow : $(RXIN)
+	$(WCC) rxin.c $(CFW) rxin.ow
+screen.ow : $(SCREEN)
+	$(WCC) screen.c $(CFW) screen.ow
+screensub.ow : $(SCREENSUB)
+	$(WCC) screensub.c $(CFW) screensub.ow
+screenvar.ow : $(SCREENVAR)
+	$(WCC) screenvar.c $(CFW) screenvar.ow
+sdrvar.ow : $(SDRVAR)
+	$(WCC) sdrvar.c $(CFW) sdrvar.ow
+selvar.ow : $(SELVAR)
+	$(WCC) selvar.c $(CFW) selvar.ow
+sigvar.ow : $(SIGVAR)
+	$(WCC) sigvar.c $(CFW) sigvar.ow
+spur.ow : $(SPUR)
+	$(WCC) spur.c $(CFW) spur.ow
+spursub.ow : $(SPURSUB)
+	$(WCC) spursub.c $(CFW) spursub.ow
+thrvar.ow : $(THRVAR)
+	$(WCC) thrvar.c $(CFW) thrvar.ow
+txvar.ow:  $(TXVAR) 
+	$(WCC) txvar.c $(CFW) txvar.ow
+ui.ow : $(UI)
+	$(WCC) ui.c $(CFW) ui.ow
+uivar.ow:  $(UIVAR) 
+	$(WCC) uivar.c $(CFW) uivar.ow
+timing.ow : $(TIMING)
+	$(WCC) timing.c $(CFW) timing.ow
+timf2.ow : $(TIMF2)
+	$(WCC) timf2.c $(CFW) timf2.ow
+tune.ow : $(TUNE)
+	$(WCC) tune.c $(CFW) tune.ow
+tx.ow : $(TX)
+	$(WCC) tx.c $(CFW) tx.ow
+tx_graph.ow : $(TX_GRAPH)
+	$(WCC) tx_graph.c $(CFW) tx_graph.ow
+txssb.ow : $(TXSSB)
+	$(WCC) txssb.c $(CFW) txssb.ow
+txtest.ow : $(TXTEST)
+	$(WCC) txtest.c $(CFW) txtest.ow
+wcw.ow : $(WCW)
+	$(WCC) wcw.c $(CFW) wcw.ow
+wide_graph.ow : $(WIDE_GRAPH)
+	$(WCC) wide_graph.c $(CFW) wide_graph.ow
+sdr14.ow : $(SDR14)
+	$(WCC) sdr14.c $(CFW) sdr14.ow
+sellim.ow : $(SELLIM)
+	$(WCC) sellim.c $(CFW) sellim.ow
+
+
+configure.exe : Makefile configure.ow
+
+	$(WCC) \
+-oconfigure.exe -Wl,-s,-warn-common configure.ow -lws2_32 -lgdi32 -lwinmm
+
+configure.ow : configure.c
+	$(WCC) configure.c $(CFW) configure.ow
+
+
+
+
+# ---------------------- Linux console specific things ------------------
+  ifeq ("@SVGALIB@", "NOT_PRESENT")
+linrad: Makefile lmain.c
+	@echo " "
+	@echo "	To compile for terminal mode you must install"
+	@echo "	the svgalib package and run configure again."
+	@echo " "
+else
+linrad: Makefile lmain.ol ui.ol uivar.ol fft1var.ol lsetad.ol hware.ol rxin.ol \
+wide_graph.ol getiq.ol fft0.ol fft1.ol adtest.ol screenvar.ol sigvar.ol \
+baseb_graph.ol afc_graph.ol hires_graph.ol fftasm.ol palette.ol gifsave.ol \
+calibrate.ol calsub.ol calsub2.ol llsqvar.ol caliq.ol hwaredriver.ol \
+llsq.ol sellim.ol selvar.ol mix1.ol fft2var.ol fft3var.ol fft2mmxb.ol \
+fft2mmxa.ol fft2mmxc.ol spursub.ol network.ol buf.ol thrvar.ol radar.ol \
+fft3.ol split.ol timf2.ol simdasm.ol fft1_re.ol fft1_complex.ol powtvar.ol \
+wcw.ol blank1.ol calvar.ol blnkvar.ol fft2.ol pol_graph.ol modesub.ol \
+help.ol afcsub.ol timing.ol mix2.ol spur.ol coherent.ol cohsub.ol eme.ol \
+tune.ol txtest.ol mouse.ol freq_control.ol vgatest mousetest morse.ol \
+powtim.ol cwspeed.ol coh_osc.ol cwdetect.ol txvar.ol tx.ol \
+menu.ol screen.ol sdrvar.ol lsys.ol sdr14.ol keyboard_var.ol lvar.ol \
+meter_graph.ol fonts.ol screensub.ol tx_graph.ol txssb.ol lxsys.ol 
+
+
+	${CC} -m32 -olinrad -lvgagl -lvga -lpthread -lm @ALSALIB@ -lrt \
+-Wl,-Map,linrad.lmap,-warn-common \
+	lmain.ol lvar.ol ui.ol lsetad.ol fft1.ol buf.ol radar.ol \
+mouse.ol wide_graph.ol getiq.ol fft0.ol adtest.ol hires_graph.ol \
+fftasm.ol baseb_graph.ol mix2.ol afc_graph.ol hwaredriver.ol \
+sellim.ol palette.ol gifsave.ol timing.ol help.ol calibrate.ol \
+calsub.ol calsub2.ol llsqvar.ol llsq.ol caliq.ol timf2.ol \
+powtim.ol selvar.ol fft2var.ol sigvar.ol screenvar.ol uivar.ol \
+fft1var.ol fft3var.ol calvar.ol blnkvar.ol fft1_re.ol lxsys.ol \
+fft1_complex.ol powtvar.ol simdasm.ol blank1.ol fft2.ol tx.ol \
+pol_graph.ol split.ol modesub.ol spur.ol cohsub.ol coherent.ol \
+eme.ol spursub.ol freq_control.ol fft2mmxb.ol fft2mmxa.ol \
+rxin.ol wcw.ol mix1.ol afcsub.ol morse.ol menu.ol fonts.ol \
+tune.ol txtest.ol network.ol fft2mmxc.ol hware.ol coh_osc.ol \
+cwspeed.ol sdrvar.ol sdr14.ol keyboard_var.ol thrvar.ol \
+lsys.ol screen.ol cwdetect.ol tx_graph.ol txssb.ol \
+meter_graph.ol txvar.ol screensub.ol fft3.ol 
+endif
+
+lvar.ol: lvar.c globdef.h ldef.h lconf.h caldef.h thrdef.h  
+	$(LCC) lvar.c $(CFL) lvar.ol
+lsys.ol: lsys.c globdef.h ldef.h lconf.h thrdef.h uidef.h keyboard_def.h \
+	screendef.h 
+	$(LCC) lsys.c $(CFL) lsys.ol
+lmain.ol : lmain.c globdef.h ldef.h lconf.h thrdef.h uidef.h screendef.h \
+	options.h vernr.h sdrdef.h keyboard_def.h conf.h \
+	thrdef.h rusage.h
+	$(LCC) lmain.c $(CFL) lmain.ol
+
+  ifeq ("@X11@", "NOT_PRESENT")
+xlinrad: Makefile lmain.c
+	@echo " "
+	@echo "	To compile for X11 you must install"
+	@echo "	the X11 development package and run configure again."
+	@echo " Debian, Ubuntu,...: apt-get install libX11-dev"
+	@echo " Fedora: yum install libX11-devel"
+	@echo " Mandriva, package libx11_6-devel"
+	@echo " "
+else
+# ---------------------- Linux X11 specific things ------------------
+xlinrad: Makefile xmain.ol ui.ol uivar.ol fft1var.ol lsetad.ol hware.ol rxin.ol \
+wide_graph.ol getiq.ol fft0.ol fft1.ol adtest.ol screenvar.ol sigvar.ol \
+baseb_graph.ol afc_graph.ol hires_graph.ol fftasm.ol palette.ol gifsave.ol \
+calibrate.ol calsub.ol calsub2.ol llsqvar.ol caliq.ol hwaredriver.ol \
+llsq.ol sellim.ol selvar.ol mix1.ol fft2var.ol fft3var.ol fft2mmxb.ol \
+fft2mmxa.ol fft2mmxc.ol spursub.ol network.ol buf.ol thrvar.ol radar.ol \
+fft3.ol split.ol timf2.ol simdasm.ol fft1_re.ol fft1_complex.ol powtvar.ol \
+wcw.ol blank1.ol calvar.ol blnkvar.ol fft2.ol pol_graph.ol modesub.ol \
+help.ol afcsub.ol timing.ol mix2.ol spur.ol coherent.ol cohsub.ol eme.ol \
+tune.ol txtest.ol mouse.ol freq_control.ol morse.ol lxsys.ol lvar.ol \
+powtim.ol cwspeed.ol coh_osc.ol cwdetect.ol txvar.ol tx.ol \
+menu.ol screen.ol sdrvar.ol xsys.ol sdr14.ol keyboard_var.ol xvar.ol \
+meter_graph.ol fonts.ol screensub.ol tx_graph.ol txssb.ol wxsys.ol
+
+
+
+
+	${CC} -m32 -oxlinrad -L/usr/X11R6/lib @SHMLIB@ -lX11 -lpthread \
+-lm @ALSALIB@ -lrt -Wl,-Map,linrad.xmap,-warn-common \
+xmain.ol xvar.ol ui.ol lsetad.ol fft1.ol buf.ol lvar.ol radar.ol \
+mouse.ol wide_graph.ol getiq.ol fft0.ol adtest.ol hires_graph.ol \
+fftasm.ol baseb_graph.ol mix2.ol afc_graph.ol hwaredriver.ol \
+sellim.ol palette.ol gifsave.ol timing.ol help.ol calibrate.ol \
+calsub.ol calsub2.ol llsqvar.ol llsq.ol caliq.ol timf2.ol tx.ol \
+powtim.ol selvar.ol fft2var.ol sigvar.ol screenvar.ol uivar.ol \
+fft1var.ol fft3var.ol calvar.ol blnkvar.ol fft1_re.ol lxsys.ol \
+fft1_complex.ol powtvar.ol simdasm.ol blank1.ol fft2.ol \
+pol_graph.ol split.ol modesub.ol spur.ol cohsub.ol coherent.ol \
+eme.ol spursub.ol freq_control.ol fft2mmxb.ol fft2mmxa.ol \
+rxin.ol wcw.ol mix1.ol afcsub.ol morse.ol menu.ol fonts.ol \
+tune.ol txtest.ol network.ol fft2mmxc.ol hware.ol coh_osc.ol \
+cwspeed.ol sdrvar.ol sdr14.ol keyboard_var.ol thrvar.ol \
+xsys.ol screen.ol cwdetect.ol tx_graph.ol txssb.ol \
+txvar.ol screensub.ol fft3.ol wxsys.ol meter_graph.ol 
+
+endif
+
+wxsys.ol: $(WXSYS)
+	$(LCC) wxsys.c $(CFL) wxsys.ol
+xvar.ol: xvar.c thrdef.h globdef.h lconf.h xdef.h ldef.h  
+	$(LCC) xvar.c $(CFL) xvar.ol
+xsys.ol: xsys.c thrdef.h globdef.h uidef.h screendef.h xdef.h \
+	keyboard_def.h lconf.h vernr.h
+	$(LCC) xsys.c $(CFL) xsys.ol
+xmain.ol : xmain.c thrdef.h globdef.h uidef.h screendef.h \
+	vernr.h options.h keyboard_def.h lconf.h xdef.h ldef.h
+	$(LCC) xmain.c $(CFL) xmain.ol
+#--------------------------------------------------------------------------
+
+lsetad.ol : lsetad.c globdef.h uidef.h sigdef.h fft1def.h fft2def.h \
+	fft3def.h conf.h screendef.h sdrdef.h vernr.h thrdef.h \
+	hwaredef.h rusage.h ldef.h txdef.h options.h keyboard_def.h
+	$(LCC) lsetad.c $(CFL) lsetad.ol
+
+split.ol: split.sl split.s
+	$(NASM) -w-orphan-labels -felf -s split.sl -o split.ol
+fft2mmxa.ol: fft2mmxa.sl fft2mmxa.s
+	$(NASM) -w-orphan-labels -felf -s fft2mmxa.sl -o fft2mmxa.ol
+fft2mmxb.ol: fft2mmxb.sl fft2mmxb.s
+	$(NASM) -w-orphan-labels -felf -s fft2mmxb.sl -o fft2mmxb.ol
+fft2mmxc.ol: fft2mmxc.sl fft2mmxc.s
+	$(NASM) -w-orphan-labels -felf -s fft2mmxc.sl -o fft2mmxc.ol
+fftasm.ol: fftasm.sl fftasm.s
+	$(NASM) -w-orphan-labels -felf -s fftasm.sl -o fftasm.ol
+getiq.ol: getiq.sl getiq.s
+	$(NASM) -w-orphan-labels -felf -s getiq.sl -o getiq.ol
+simdasm.ol: simdasm.sl simdasm.s
+	$(NASM) -w-orphan-labels -felf -s simdasm.sl -o simdasm.ol
+hware.ol: hware.s
+	$(NASM) -w-orphan-labels -felf -s hware.s -o hware.ol
+
+lxsys.ol: lxsys.c thrdef.h globdef.h uidef.h lconf.h xdef.h ldef.h \
+	hwaredef.h
+	$(LCC) lxsys.c $(CFL) lxsys.ol
+
+adtest.ol : $(ADTEST)
+	$(LCC) adtest.c $(CFL) adtest.ol
+afc_graph.ol : $(AFC_GRAPH)
+	$(LCC) afc_graph.c $(CFL) afc_graph.ol
+afcsub.ol : $(AFCSUB)
+	$(LCC) afcsub.c $(CFL) afcsub.ol
+buf.ol : $(BUF)
+	$(LCC) buf.c $(CFL) buf.ol
+baseb_graph.ol : $(BASEB_GRAPH)
+	$(LCC) baseb_graph.c $(CFL) baseb_graph.ol
+blank1.ol : $(BLANK1)
+	$(LCC) blank1.c $(CFL) blank1.ol
+blnkvar.ol : $(BLNKVAR)
+	$(LCC) blnkvar.c $(CFL) blnkvar.ol
+calibrate.ol : $(CALIBRATE)
+	$(LCC) calibrate.c $(CFL) calibrate.ol
+caliq.ol : $(CALIQ)
+	$(LCC) caliq.c $(CFL) caliq.ol
+calsub.ol : $(CALSUB)
+	$(LCC) calsub.c $(CFL) calsub.ol
+calsub2.ol : $(CALSUB2)
+	$(LCC) calsub2.c $(CFL) calsub2.ol
+calvar.ol : $(CALVAR)
+	$(LCC) calvar.c $(CFL) calvar.ol
+coh_osc.ol : $(COH_OSC)
+	$(LCC) coh_osc.c $(CFL) coh_osc.ol
+coherent.ol : $(COHERENT)
+	$(LCC) coherent.c $(CFL) coherent.ol
+cohsub.ol : $(COHSUB)
+	$(LCC) cohsub.c $(CFL) cohsub.ol
+cwspeed.ol : $(CWSPEED)
+	$(LCC) cwspeed.c $(CFL) cwspeed.ol
+cwdetect.ol : $(CWDETECT)
+	$(LCC) cwdetect.c $(CFL) cwdetect.ol
+eme.ol : $(EME)
+	$(LCC) eme.c $(CFL) eme.ol
+fft0.ol : $(FFT0)
+	$(LCC) fft0.c $(CFL) fft0.ol
+fft1.ol : $(FFT1)
+	$(LCC) fft1.c $(CFL) fft1.ol
+fft1_complex.ol : $(FFT1_COMPLEX)
+	$(LCC) fft1_complex.c $(CFL) fft1_complex.ol
+fft1_re.ol : $(FFT1_RE)
+	$(LCC) fft1_re.c $(CFL) fft1_re.ol
+fft1var.ol : $(FFT1VAR)
+	$(LCC) fft1var.c $(CFL) fft1var.ol
+fft2.ol : $(FFT2)
+	$(LCC) fft2.c $(CFL) fft2.ol
+fft2var.ol : $(FFT2VAR)
+	$(LCC) fft2var.c $(CFL) fft2var.ol
+fft3.ol : $(FFT3)
+	$(LCC) fft3.c $(CFL) fft3.ol
+fft3var.ol : $(FFT3VAR)
+	$(LCC) fft3var.c $(CFL) fft3var.ol
+fonts.ol : $(FONTS)
+	$(LCC) fonts.c $(CFL) fonts.ol
+freq_control.ol : $(FREQ_CONTROL) @DEPS2@ 
+	$(LCC) freq_control.c $(CFL) freq_control.ol
+gifsave.ol : $(GIFSAVE)
+	$(LCC) gifsave.c $(CFL) gifsave.ol
+help.ol : $(HELP)
+	$(LCC) help.c $(CFL) help.ol
+hires_graph.ol : $(HIRES_GRAPH)
+	$(LCC) hires_graph.c $(CFL) hires_graph.ol
+hwaredriver.ol : $(HWAREDRIVER) @LDEPS1@ lconf.h ldef.h
+	$(LCC) hwaredriver.c $(CFL) hwaredriver.ol
+keyboard_var.ol : $(KEYBOARD_VAR)
+	$(LCC) keyboard_var.c $(CFL) keyboard_var.ol
+llsq.ol : $(LLSQ)
+	$(LCC) llsq.c $(CFL) llsq.ol
+llsqvar.ol : $(LLSQVAR)
+	$(LCC) llsqvar.c $(CFL) llsqvar.ol
+menu.ol : $(MENU)
+	$(LCC) menu.c $(CFL) menu.ol
+meter_graph.ol : $(METER_GRAPH)
+	$(LCC) meter_graph.c $(CFL) meter_graph.ol
+mix1.ol : $(MIX1)
+	$(LCC) mix1.c $(CFL) mix1.ol
+mix2.ol : $(MIX2)
+	$(LCC) mix2.c $(CFL) mix2.ol
+morse.ol : $(MORSE)
+	$(LCC) morse.c $(CFL) morse.ol
+modesub.ol : $(MODESUB)
+	$(LCC) modesub.c $(CFL) modesub.ol
+mouse.ol : $(MOUSE)
+	$(LCC) mouse.c $(CFL) mouse.ol
+network.ol : $(NETWORK) rusage.h 
+	$(LCC) network.c $(CFL) network.ol
+palette.ol : $(PALETTE)
+	$(LCC) palette.c $(CFL) palette.ol
+pol_graph.ol : $(POL_GRAPH)
+	$(LCC) pol_graph.c $(CFL) pol_graph.ol
+powtim.ol : $(POWTIM)
+	$(LCC) powtim.c $(CFL) powtim.ol
+powtvar.ol : $(POWTVAR)
+	$(LCC) powtvar.c $(CFL) powtvar.ol
+radar.ol : $(RADAR)
+	$(LCC) radar.c $(CFL) radar.ol
+rxin.ol : $(RXIN)
+	$(LCC) rxin.c $(CFL) rxin.ol
+screen.ol : $(SCREEN)
+	$(LCC) screen.c $(CFL) screen.ol
+screenvar.ol : $(SCREENVAR)
+	$(LCC) screenvar.c $(CFL) screenvar.ol
+screensub.ol : $(SCREENSUB)
+	$(LCC) screensub.c $(CFL) screensub.ol
+sdrvar.ol : $(SDRVAR)
+	$(LCC) sdrvar.c $(CFL) sdrvar.ol
+selvar.ol : $(SELVAR)
+	$(LCC) selvar.c $(CFL) selvar.ol
+sigvar.ol : $(SIGVAR)
+	$(LCC) sigvar.c $(CFL) sigvar.ol
+spur.ol : $(SPUR)
+	$(LCC) spur.c $(CFL) spur.ol
+spursub.ol : $(SPURSUB)
+	$(LCC) spursub.c $(CFL) spursub.ol
+thrvar.ol : $(THRVAR)
+	$(LCC) thrvar.c $(CFL) thrvar.ol
+ui.ol : $(UI) lconf.h xdef.h ldef.h
+	$(LCC) ui.c $(CFL) ui.ol
+uivar.ol: $(UIVAR)
+	$(LCC) uivar.c $(CFL) uivar.ol
+timing.ol : $(TIMING)
+	$(LCC) timing.c $(CFL) timing.ol
+timf2.ol : $(TIMF2)
+	$(LCC) timf2.c $(CFL) timf2.ol
+tune.ol : $(TUNE)
+	$(LCC) tune.c $(CFL) tune.ol
+tx.ol: $(TX)
+	$(LCC) tx.c $(CFL) tx.ol
+tx_graph.ol: $(TX_GRAPH)
+	$(LCC) tx_graph.c $(CFL) tx_graph.ol
+txssb.ol: $(TXSSB)
+	$(LCC) txssb.c $(CFL) txssb.ol
+txtest.ol : $(TXTEST)
+	$(LCC) txtest.c $(CFL) txtest.ol
+txvar.ol: $(TXVAR)
+	$(LCC) txvar.c $(CFL) txvar.ol
+wcw.ol : $(WCW)
+	$(LCC) wcw.c $(CFL) wcw.ol
+wide_graph.ol : $(WIDE_GRAPH)
+	$(LCC) wide_graph.c $(CFL) wide_graph.ol
+sdr14.ol : $(SDR14)
+	$(LCC) sdr14.c $(CFL) sdr14.ol
+sellim.ol : $(SELLIM)
+	$(LCC) sellim.c $(CFL) sellim.ol
+
+
+# ------------------      Tools for Linux      -----------------------
+vgatest: vgatest.ol
+	${CC} -ovgatest -lvgagl -lvga -lm -Wl -s vgatest.ol
+vgatest.ol: vgatest.c
+	${CC} vgatest.c -c -o vgatest.ol
+mousetest: mousetest.ol
+	${CC} -omousetest -lvgagl -lvga -lm -Wl -s mousetest.ol
+mousetest.ol: mousetest.c
+	${CC} mousetest.c -c -o mousetest.ol
+thrdef.h: rusage.h
+	touch thrdef.h -c
+
+LIR_OBJDIR := /etc/linrad/modules-$(shell uname -r)/
+
+
+svgalib :
+	@test -w /etc || ( \
+	echo; \
+	echo ERROR: root permission required to install boot scripts; \
+	__stop-at-error__)
+	mkdir -p /etc/linrad
+	mkdir -p $(LIR_OBJDIR)
+	@test -f $(LIR_OBJDIR)/svgalib_helper.@MODEXT@ || ( \
+	echo; \
+	echo ERROR: copy svgalib_helper.@MODEXT@ to $(LIR_OBJDIR) and try again; \
+	__stop-at-error__)
+	rm -f /etc/linrad/svga
+	cp svga /etc/linrad 
+	chmod 755 /etc/linrad/svga
+	mkdir -p @INIT@/rc0.d
+	mkdir -p @INIT@/rc1.d
+	mkdir -p @INIT@/rc2.d
+	mkdir -p @INIT@/rc3.d
+	mkdir -p @INIT@/rc5.d
+	mkdir -p @INIT@/rc6.d
+	rm -f @INIT@/rc0.d/K28svga
+	rm -f @INIT@/rc1.d/S96svga
+	rm -f @INIT@/rc2.d/S96svga
+	rm -f @INIT@/rc3.d/S96svga
+	rm -f @INIT@/rc5.d/S96svga
+	rm -f @INIT@/rc6.d/K28svga
+	ln -s /etc/linrad/svga @INIT@/rc0.d/K28svga
+	ln -s /etc/linrad/svga @INIT@/rc1.d/S96svga
+	ln -s /etc/linrad/svga @INIT@/rc2.d/S96svga
+	ln -s /etc/linrad/svga @INIT@/rc3.d/S96svga
+	ln -s /etc/linrad/svga @INIT@/rc5.d/S96svga
+	ln -s /etc/linrad/svga @INIT@/rc6.d/K28svga
+
+@SDR1422@ : 
+	@echo ""
+	@echo ""
+	@echo "----------------------------------------------------"
+	@echo "There is no driver for ft245 for linux 2.2.x kernels"
+	@echo "Use linux 2.4.x or later"
+	@echo "----------------------------------------------------"
+	@echo ""
+
+@SDR1424@ : 
+	@test -w /etc || ( \
+	echo; \
+	echo ERROR: root permission required to install boot scripts; \
+	__stop-at-error__)
+	mkdir -p /etc/linrad
+	mkdir -p $(LIR_OBJDIR)
+	cp usb_sdr14 /etc/linrad 
+	chmod 755 /etc/linrad/usb_sdr14
+	${CC} -D__KERNEL__ -DCONFIG_USB_DEBUG=1 -I/usr/src/@LINDIR@/include \
+-Wall -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing \
+-fno-common -fomit-frame-pointer -pipe -mpreferred-stack-boundary=2 \
+-march=i686 -DMODULE -DMODVERSIONS \
+-include /usr/src/@LINDIR@/include/linux/modversions.h  \
+-nostdinc -iwithprefix include -DKBUILD_BASENAME=ft245  \
+-c -o ft245.o ft245.c
+	rm -f /etc/linrad/ft245.o 
+	cp ft245.o $(LIR_OBJDIR) 
+	rm -f /etc/linrad/usb_sdr14
+	cp usb_sdr14 /etc/linrad 
+	chmod 755 /etc/linrad/usb_sdr14
+	mkdir -p @INIT@/rc0.d
+	mkdir -p @INIT@/rc1.d
+	mkdir -p @INIT@/rc2.d
+	mkdir -p @INIT@/rc3.d
+	mkdir -p @INIT@/rc5.d
+	mkdir -p @INIT@/rc6.d
+	rm -f @INIT@/rc0.d/K28usb_sdr14
+	rm -f @INIT@/rc1.d/S96usb_sdr14
+	rm -f @INIT@/rc2.d/S96usb_sdr14
+	rm -f @INIT@/rc3.d/S96usb_sdr14
+	rm -f @INIT@/rc5.d/S96usb_sdr14
+	rm -f @INIT@/rc6.d/K28usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc0.d/K28usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc1.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc2.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc3.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc5.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc6.d/K28usb_sdr14
+
+
+obj-m := ft245.o
+KDIR  := /lib/modules/$(shell uname -r)/build
+PWD   := $(shell pwd)
+PGM   := @FT245PGM@
+
+
+@SDR1426@ :
+  ifneq ("$(PGM)", "ERROR")
+	@test -w /etc || ( \
+	echo; \
+	echo ERROR: root permission required to install boot scripts; \
+	__stop-at-error__)
+	mkdir -p /etc/linrad
+	mkdir -p $(LIR_OBJDIR)
+	cp usb_sdr14 /etc/linrad 
+	chmod 755 /etc/linrad/usb_sdr14
+	$(MAKE) -C $(KDIR) @KERNEL_SUBDIRS@=$(PWD) modules
+	rm -f /etc/linrad/ft245.o 
+	rm -f /etc/linrad/ft245.ko 
+	cp ft245.o $(LIR_OBJDIR) 
+	cp ft245.ko $(LIR_OBJDIR) 
+	rm -f /etc/linrad/usb_sdr14
+	cp usb_sdr14 /etc/linrad 
+	chmod 755 /etc/linrad/usb_sdr14
+	mkdir -p @INIT@/rc0.d
+	mkdir -p @INIT@/rc1.d
+	mkdir -p @INIT@/rc2.d
+	mkdir -p @INIT@/rc3.d
+	mkdir -p @INIT@/rc5.d
+	mkdir -p @INIT@/rc6.d
+	rm -f @INIT@/rc0.d/K28usb_sdr14
+	rm -f @INIT@/rc1.d/S96usb_sdr14
+	rm -f @INIT@/rc2.d/S96usb_sdr14
+	rm -f @INIT@/rc3.d/S96usb_sdr14
+	rm -f @INIT@/rc5.d/S96usb_sdr14
+	rm -f @INIT@/rc6.d/K28usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc0.d/K28usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc1.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc2.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc3.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc5.d/S96usb_sdr14
+	ln -s /etc/linrad/usb_sdr14 @INIT@/rc6.d/K28usb_sdr14
+else
+	@echo " "
+	@echo " "
+	@echo "	There is no ft245.c that works for kernels between"
+	@echo "	2.6.0 and 2.6.3."
+	@echo "	Use a kernel in the 2.4.xx series or"
+	@echo "	a kernel with version number 2.6.4 or above."
+	@echo " "
+  endif
+

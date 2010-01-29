@@ -1,0 +1,53 @@
+rm -f *~
+rm -f Modules.symvers
+rm -f Module.symvers
+rm -f lconf.h
+rm -f conf.h
+rm -f Makefile
+rm -f *.o
+rm -f *.ol
+rm -f *.ow
+rm -f DEADJOE
+rm -f core
+rm -f par*
+rm -f dsp*
+rm -f dmp
+rm -f save_par
+rm -f restore_par
+rm -f x.x
+rm -f x.y
+rm -f cmpxchg.txt
+rm -f getitimer.txt
+rm -f todo.txt
+rm -f config.cache
+rm -f config.log
+rm -f config.status
+rm -f adfile
+rm -f adwav
+rm -f linrad*
+rm -f xlinrad
+rm -f mousetest
+rm -f vgatest
+rm -f *.gif
+rm -f *.wav
+rm -f *.bin
+rm -f soundboard_init.log
+rm -f soundboard_rx_init.log
+rm -f soundboard_tx_init.log
+rm -f restore
+rm -f *.tar
+rm -f *.bz2
+rm -f users_hwaredef.h
+rm -f users_hwaredriver.c
+rm -f users_extra.c
+rm -f wusers_hwaredriver.c
+rm -f wusers_extra.c
+rm -f ft245.ko
+rm -f ft245.o
+rm -f ft245.c
+rm -f ft245.mod.c
+du
+ls
+
+
+

@@ -1,0 +1,51 @@
+      ************* openSUSE 11.1 ********************
+
+A standard install does not include development or 32 bit environment.
+It is recommended to select all necessary packages at installation
+time, but if you have a working installation, then use YaST to add the
+following packages (or make sure they are already installed)
+
+gcc-32bit
+nasm
+xorg-x11-devel-32bit
+alsa-devel
+alsa-tools
+alsa-tools-gui
+alsamixergui
+
+The configure script looks for libasound.so
+For some reason it is not automatically in place.
+Create it with a link like this:
+sudo ln /usr/lib/libasound.so.2 /usr/lib/libasound.so
+
+A link is also needed for libX11 and libXext:
+sudo ln /usr/lib/libX11.so.6 /usr/lib/libX11.so
+sudo ln /usr/lib/libXext.so.6 /usr/lib/libXext.so
+
+That is enough for xlinrad to compile. In case you want to
+use 4Front OSS it might be different, the configure script
+might not work properly so it might be necessary to change
+Makefile and lconf.h manually.
+
+Now, run configure with the command ./configure in the Linrad
+directory from a terminal window.It should execute without errors
+and end like this:
+
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating conf.h
+config.status: creating lconf.h
+config.status: creating rusage.h
+config.status: creating ft245.c
+checking for /usr/bin/nasm... yes
+Normal End
+bsz@suse:~/linrad-03.07> 
+
+Then type the command make xlinrad which should run without errors
+and end like this:
+
+cwspeed.ol sdrvar.ol sdr14.ol keyboard_var.ol thrvar.ol \
+xsys.ol screen.ol cwdetect.ol tx_graph.ol txssb.ol \
+txvar.ol screensub.ol fft3.ol wxsys.ol meter_graph.ol 
+bsz@suse:~/linrad-03.07>  
+

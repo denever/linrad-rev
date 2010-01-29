@@ -1,0 +1,115 @@
+
+      ************* Fedora 11 (64 bit) ********************
+
+A Fedora user did presumably not set up his system for software
+development so when a Linrad install is attempted, the first
+run of the configure script would look like this:
+
+
+[root@Fd11-64 dsp]# ./configure
+checking for /usr/lib/oss/soundcard.h... no
+.
+.
+.
+checking for gcc... no
+checking for cc... no
+checking for cl.exe... no
+configure: error: in /home/dsp':
+configure: error: no acceptable C compiler found in $PATH
+See onfig.log' for more details.
+[root@Fd11-64 dsp]# 
+
+Make sure you have Internet access and type:
+yum install gcc
+
+Also type:
+yum groupinstall "Legacy Software Development"
+
+The next run of ./configure would end like this:
+You might consider installing ALSA
+You might consider installing ALSA headers
+checking for /usr/bin/nasm... no
+The package nasm seems to be not installed.
+[root@Fd11-64 dsp]# 
+
+To use ALSA you have to install the development package:
+yum install alsa-lib-devel.i586
+The alsa package is automatically installed by this command since
+the development package depends on it.
+
+Installing nasm is necessary:
+yum install nasm
+
+Now the configure script ends without errors:
+config.status: creating Makefile
+config.status: creating conf.h
+config.status: creating lconf.h
+config.status: creating rusage.h
+config.status: creating ft245.c
+checking for /usr/bin/nasm... yes
+Normal End
+[root@Fd11-64 dsp]# 
+
+When you now try to compile xlinrad the result is like this:
+[root@Fd11-64 dsp]# make xlinrad
+ 
+	To compile for X11 you must install
+	the X11 development package and run configure again.
+ Debian, Ubuntu,...: apt-get install libX11-dev
+ Fedora: yum install libX11-devel
+ 
+After installing libX11-devel and running ./configure an attempt to
+run make xlinrad gives this result: 
+
+gcc -D_FILE_OFFSET_BITS=64 xmain.c -g -O -DOSNUM=1 -W -Wall -Wimplicit
+-Wreturn-type -Wformat -m32 -Wunused -Wcomment -Wchar-subscripts -Wshadow
+- -Wuninitialized -Wparentheses -Wstrict-prototypes -Werror -ffast-math
+- - -Wundef -fomit-frame-pointer -c -o xmain.ol
+In file included from /usr/include/features.h:376,
+                 from /usr/include/stdio.h:28,
+                 from xmain.c:5:
+/usr/include/gnu/stubs.h:7:27: error: gnu/stubs-32.h: No such file or
+directory
+make: *** [xmain.ol] Error 1
+[root@Fd11-64 dsp]# 
+
+Use yum like this to find out what to install:
+yum provides "*gnu/stubs-32.h"
+
+The result would be (july 2009)
+updates/filelists_db                                     | 5.0 MB     00:24     
+glibc-devel-2.10.1-2.i586 : Object files for development using standard C
+                          : libraries.
+Repo        : fedora
+Matched from:
+Filename    : /usr/include/gnu/stubs-32.h
+
+This way we can find out that the next command should be:
+
+yum install glibc-devel.i586
+
+The next attempt to run make xlinrad will look like this:
+/usr/bin/ld: skipping incompatible /usr/lib64/libX11.so when searching for
+/ -lX11
+/usr/bin/ld: cannot find -lX11
+collect2: ld returned 1 exit status
+make: *** [xlinrad] Error 1
+
+The file libX11.so for 32 bits is installed like this:
+yum install libX11-devel.i586
+ 
+That is all what is necessary. make xlinrad now compiles
+without errors.
+
+When you get into the setup routine you might encounter this
+message:
+
+The libraries for MIT-SHM are not installed.
+Install the Debian packages libxext-dev and x11proto-xext-dev
+Fedora: libXext-devel(.i586)
+to enable MIT-SHM.
+
+You can install shared memory for the screen like this:
+yum install libXext-devel.i586
+
+This will allow you to select SHM and get a much faster display. 

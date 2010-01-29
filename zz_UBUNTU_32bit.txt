@@ -1,0 +1,73 @@
+      ************* Ubuntu 9.04 ********************
+
+A standard install does provide a working C compiler, but nasm
+is not installed so when a Linrad install is attempted, the first
+run of the configure script would look like this:
+
+bsz@Ubu904:~/test$ ./configure
+checking for /usr/lib/oss/soundcard.h... no
+.
+.
+.
+You might consider installing ALSA
+You might consider installing ALSA headers
+checking for /usr/bin/nasm... no
+The package nasm seems to be not installed.
+bsz@Ubu904:~/test$ ls z*
+
+Make sure you have Internet access and type:
+sudo apt-get install nasm
+
+It will be a good idea to install ALSA as suggested, but not
+if you have installed 4Front OSS. In Ubuntu there is presumably
+an OSS compatible interface to ALSA which will be used if you 
+do not install the ALSA development package.
+
+When you now try to compile xlinrad the result is like this:
+bsz@Ubu904:~/test$ make xlinrad 
+ 
+	To compile for X11 you must install
+	the X11 development package and run configure again.
+ Debian, Ubuntu,...: apt-get install libX11-dev
+ Fedora: yum install libX11-devel
+ 
+bsz@Ubu904:~/test$ 
+
+The command is:
+sudo apt-get install libX11-dev
+
+
+This is all needed to compile Linrad. It will give sound in the
+OSS compatibility mode and it will give graphics through the X11
+server.
+
+The "S=Global parameters set up." in Linrad will show this message
+if you are not in newcomers mode:
+
+*******************************************************************************
+The libraries for MIT-SHM are not installed.
+Install the Debian packages libxext-dev and x11proto-xext-dev
+(Fedora: libXext-devel[.i586])
+to enable MIT-SHM.
+Then run ./configure and after that make xlinrad.
+*******************************************************************************
+
+This will allow graphics through shared memory which bypasses the X11
+server and provides moch faster graphics. Like this:
+
+sudo apt-get install x11proto-xext-dev
+sudo apt-get install libxext-dev
+./configure
+make xlinrad
+
+If you want to use 4Front OSS, do not install ALSA.
+
+Ubuntu already has most of ALSA so if you do not remove anything
+(by installing OSS)you need only install this package:
+
+sudo apt-get install libasound2-dev
+
+Then, as always after an environment change:
+./configure
+make xlinrad
+

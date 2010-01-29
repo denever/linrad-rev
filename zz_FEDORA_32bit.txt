@@ -1,0 +1,85 @@
+
+      ************* Fedora 11 (32 bit) ********************
+
+A Fedora user did presumably not set up his system for software
+development so when a Linrad install is attempted, the first
+run of the configure script would look like this:
+
+
+[root@F[root@P4FD11 linrad-03.07]# ./configure
+checking for /usr/lib/oss/soundcard.h... no
+.
+.
+.
+checking for gcc... no
+checking for cc... no
+checking for cl.exe... no
+configure: error: in /home/dsp':
+configure: error: no acceptable C compiler found in $PATH
+See onfig.log' for more details.
+[root@P4FD11 linrad-03.07]# 
+
+Make sure you have Internet access and type:
+yum install gcc
+
+The next run of ./configure would end like this:
+You might consider installing ALSA
+You might consider installing ALSA headers
+checking for /usr/bin/nasm... no
+The package nasm seems to be not installed.
+[root@P4FD11 linrad-03.07]# 
+
+To use ALSA you have to install the development package:
+yum install alsa-lib-devel
+
+Installing nasm is necessary:
+yum install nasm
+
+Now the configure script ends without errors:
+config.status: creating Makefile
+config.status: creating conf.h
+config.status: creating lconf.h
+config.status: creating rusage.h
+config.status: creating ft245.c
+checking for /usr/bin/nasm... yes
+Normal End
+[root@P4FD11 linrad-03.07]# 
+
+When you now try to compile xlinrad the result is like this:
+[root@P4FD11 linrad-03.07]# make xlinrad
+ 
+	To compile for X11 you must install
+	the X11 development package and run configure again.
+ Debian, Ubuntu,...: apt-get install libX11-dev
+ Fedora: yum install libX11-devel
+ 
+That is all what is necessary. make xlinrad now compiles
+without errors.
+
+When you get into the setup routine you might encounter this
+message:
+
+The libraries for MIT-SHM are not installed.
+Install the Debian packages libxext-dev and x11proto-xext-dev
+Fedora: libXext-devel(.i586)
+to enable MIT-SHM.
+
+You can install shared memory for the screen like this:
+yum install libXext-devel
+
+This will allow you to select SHM and get a much faster display. 
+
+To compile the driver for SDR-14 and SDR-IQ you have to install
+kernel devel for the kernel you are running. To find out, type
+uname -r
+[root@P4FD11 linrad-03.07]# uname -r
+2.6.29.4-167.fc11.i586
+
+Then install:
+yum install kernel-devel-2.6.29.4-167.fc11
+
+or perhaps:
+yum install kernel-devel-2.6.30.5-43.fc11
+
+or whatever kernel you are running under.
+

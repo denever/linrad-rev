@@ -1,0 +1,32 @@
+global split_two
+global split_one
+global mmx_fft1back_two
+global mmx_fft1back_one
+global fft1back_mmx_finish
+
+extern mailbox
+extern fft1_split_shi
+extern fft1_first_point
+extern fft1_last_point
+extern fft1_float
+extern fft1_size
+extern liminfo
+extern fft1_px
+extern fft1_block
+extern fft1_mask
+extern fft1_back_scramble
+extern fft1_mmxcosin
+extern fft1_n
+extern fft1_backbuffer
+extern timf2_shi
+extern timf2_pa
+extern timf2_input_block
+extern timf2_mask
+extern timf2_pwr_int
+extern fft1_interleave_points
+extern fft1_inverted_mmxwin
+extern rx_channels
+extern fft1back_lowgain_n
+extern fft1_lowlevel_points
+
+%include "split.s"
