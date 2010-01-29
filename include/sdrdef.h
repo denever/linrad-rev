@@ -1,3 +1,5 @@
+#ifndef SDRDEF_H
+#define SDRDEF_H
 
 #define SDR14_SAMPLING_CLOCK 66.66666666
 #define PERSEUS_SAMPLING_CLOCK 80000000.0
@@ -13,3 +15,4 @@ void close_perseus(void);
 int init_sdr14(void);
 int init_perseus(void);
 
+#endif

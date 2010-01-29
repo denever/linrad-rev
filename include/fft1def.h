@@ -1,3 +1,5 @@
+#ifndef FFT1DEF_H
+#define FFT1DEF_H
 
 #define FFT1_CURMODE fft1_version[fft1mode][genparm[FIRST_FFT_VERNR]]
 #define FFT1_BCKCURMODE fft1_back_version[ui.rx_rf_channels-1][genparm[FIRST_BCKFFT_VERNR]]
@@ -333,3 +335,4 @@ void resize_fft1_desired(int siz_in, float *buf_in,
                          int siz_out, float *buf_out);
 
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef TXDEF_H
+#define TXDEF_H
 
 #define MICBLOCK_SSBTIME 0.005        
 #define MICBLOCK_CWTIME 0.002
@@ -325,3 +327,4 @@ void make_tx_phstep(void);
 void init_txmem_common(float micblock_time);
 
 
+#endif

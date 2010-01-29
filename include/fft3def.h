@@ -1,4 +1,5 @@
-
+#ifndef FFT3DEF_H
+#define FFT3DEF_H
 
 extern int yieldflag_ndsp_fft3;
 extern int yieldflag_ndsp_mix2;
@@ -66,3 +67,4 @@ extern float timf3_wttim;
 extern float fft3_wttim;
 
 
+#endif

@@ -1,3 +1,5 @@
+#ifndef THRDEF_H
+#define THRDEF_H
 
 #include "rusage.h"
 
@@ -82,3 +84,5 @@ double lir_get_thread_time(void);
 double lir_get_thread_time(int no);
 #endif
 double lir_get_cpu_time(void);
+
+#endif

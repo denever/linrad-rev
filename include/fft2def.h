@@ -1,3 +1,5 @@
+#ifndef FFT2DEF_H
+#define FFT2DEF_H
 
 #define FFT2_CURMODE fft2_version[ui.rx_rf_channels-1][genparm[SECOND_FFT_VERNR]]
 
@@ -66,3 +68,5 @@ void fft2_update_liminfo(void);
 void update_hg_spectrum(void);
 void make_hires_graph(int flag);
 void make_hires_valid(void);
+
+#endif

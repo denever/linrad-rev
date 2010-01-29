@@ -1,3 +1,6 @@
+#ifndef GLOBDEF_H
+#define GLOBDEF_H
+
 #include <errno.h>
 
 #define TRUE 1
@@ -925,4 +928,4 @@ float re_xy;
 # define MAX_FFT1_VERNR 8
 # define MAX_FFT1_BCKVERNR 4
 # define MAX_FFT2_VERNR 4
-
+#endif

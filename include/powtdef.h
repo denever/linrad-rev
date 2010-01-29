@@ -1,4 +1,5 @@
-
+#ifndef POWTDEF_H
+#define POWTDEF_H
 
 #define RX_POWTIM_TRIGGER 340
 #define RX_POWTIM_SHOW 350
@@ -21,3 +22,5 @@ extern int adtest_new;
 
 void powtim_screen(void);
 void powtim_parmwrite(void);
+
+#endif

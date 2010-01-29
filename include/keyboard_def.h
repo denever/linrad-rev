@@ -1,3 +1,6 @@
+#ifndef KEYBOARD_DEF_H
+#define KEYBOARD_DEF_H
+
 #define KEYBOARD_BUFFER_SIZE 64
 #define ARROW_UP_KEY 256
 #define ARROW_DOWN_KEY 257
@@ -70,3 +73,5 @@
 extern int *keyboard_buffer;
 extern int keyboard_buffer_ptr;
 extern int keyboard_buffer_used;
+
+#endif

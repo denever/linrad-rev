@@ -1,3 +1,5 @@
+#ifndef UIDEF_H
+#define UIDEF_H
 
 #define SNDLOG if(write_log)fprintf(sndlog,
 #define BUTTON_IDLE 0
@@ -561,3 +563,4 @@ void make_thread_times(int no);
 void change_wg_highest_freq(void);
 void change_wg_lowest_freq(void);
 
+#endif

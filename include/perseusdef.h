@@ -14,6 +14,8 @@
 // *  available at the official Microtelecom Internet site:            *
 // *  http://www.microtelecom.it                                       *
 // *********************************************************************
+#ifndef PERSEUSDEF_H
+#define PERSEUSDEF_H
 
 #define PERSEUS_SAMPLING_CLOCK 80000000.0
 #define MAX_PERSEUS_FILTER 11
@@ -107,3 +109,4 @@ extern Key48 *perseus_bitstream_signatures[MAX_PERSEUS_RATES];
 extern SIOCTL sioctl;
 extern int perseus_bytesperbuf;
 
+#endif

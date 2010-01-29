@@ -1,3 +1,6 @@
+#ifndef HWAREDEF_H
+#define HWAREDEF_H
+
 void control_hware(void);
 void set_hardware_rx_gain(void);
 void set_hardware_rx_frequency(void);
@@ -135,3 +138,4 @@ extern int fg_old_band;
 #endif
 #endif
 
+#endif

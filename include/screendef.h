@@ -1,4 +1,5 @@
-
+#ifndef SCREENDEF_H
+#define SCREENDEF_H
 
 // Writing to the screen from different threads may cause 
 // incorrect colours and under X11 or Windows the variables
@@ -376,3 +377,4 @@ void show_pol(void);
 void make_wide_graph(int clear_old);
 void show_coherent(void);
 
+#endif

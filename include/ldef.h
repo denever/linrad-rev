@@ -1,3 +1,5 @@
+#ifndef LDEF_H
+#define LDEF_H
 
 extern pthread_mutex_t parport_lock;
 extern char uninit_mem_end;
@@ -49,3 +51,5 @@ void thread_perseus_input(void);
 void thread_radar(void);
 int investigate_cpu(void);
 void print_procerr(int xxprint);
+
+#endif

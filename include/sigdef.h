@@ -1,4 +1,5 @@
-
+#ifndef SIGDEF_H
+#define SIGDEF_H
 
 #define CWDETECT_CLEARED 0
 #define CWDETECT_SEARCH_SPEED 1
@@ -363,3 +364,4 @@ void init_baseband_sizes(void);
 void make_bg_filter(void);
 void clear_baseb_arrays(int nn,int k);
 
+#endif

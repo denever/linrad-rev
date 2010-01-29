@@ -1,3 +1,5 @@
+#ifndef XDEF_H
+#define XDEF_H
 
 extern int  X11_accesstype;
 #define X11_MIT_SHM      0X01 /* Use Xlib shared memory extension */
@@ -20,3 +22,5 @@ void thread_process_event(void);
 void lir_remove_mouse_thread(void);
 void store_in_kbdbuf(int c);
 void wxmouse(void);
+
+#endif

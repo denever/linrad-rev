@@ -1,3 +1,6 @@
+#ifndef NLNKDEF_H
+#define NLNKDEF_H
+
 typedef struct {
 int n;
 int size;
@@ -33,3 +36,5 @@ extern float *blanker_phasefunc;
 extern float *blanker_input;
 extern int *blanker_pulindex;
 extern char *blanker_flag;
+
+#endif

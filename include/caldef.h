@@ -1,3 +1,5 @@
+#ifndef CALDEF_H
+#define CALDEF_H
 
 #define FOLDCORR_VERNR 0x3b5f0001
 #define START_PULSES 4  
@@ -55,3 +57,4 @@ extern int cal_midlim;
 extern int cal_domain;
 extern void final_filtercorr_init(void);
 
+#endif

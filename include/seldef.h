@@ -1,3 +1,6 @@
+#ifndef SELDEF_H
+#define SELDEF_H
+
 #define AG_FRANGE_MAX 5000.
 #define AG_FRANGE_MIN 0.01
 #define AG_MAKEP 61  // odd number!!!
@@ -197,3 +200,5 @@ void show_afc(void);
 void fill_afc_graph(void);
 void remove_spur(int nnspur);
 void spursearch_spectrum_cleanup(void);
+
+#endif
