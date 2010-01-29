@@ -201,12 +201,7 @@ typedef void (*ROUTINE) (void);
 #define OS_FLAG_X 4
 // *******************************************
 
-#if(OSNUM == OS_FLAG_WINDOWS)
-#define FD unsigned int
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
 #define FD int
-#endif
 
 // Structure for transmitter parameters in ssb mode
 typedef struct {
@@ -930,3 +925,4 @@ float re_xy;
 # define MAX_FFT1_VERNR 8
 # define MAX_FFT1_BCKVERNR 4
 # define MAX_FFT2_VERNR 4
+
