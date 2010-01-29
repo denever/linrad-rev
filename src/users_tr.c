@@ -40,6 +40,11 @@
 // ****************************************************************
 
 #include <string.h>
+#include <globdef.h>
+#include <uidef.h>
+#include <screendef.h>
+#include <thrdef.h>
+#include <seldef.h>
 
 int serport_open_status;
 int serport_number = 1 ;           //default value

@@ -12,9 +12,6 @@
 
 
 #include <sys/io.h>
-#include <vga.h>
-#include <vgagl.h>
-#include <vgamouse.h>
 #include <ctype.h>
 #include <unistd.h>
 #include <sys/mman.h>
@@ -26,15 +23,15 @@
 #include <pthread.h>
 
 
-#include "globdef.h"
-#include "lconf.h"
-#include "thrdef.h"
-#include "ldef.h"
-#include "uidef.h"
-#include "screendef.h"
-#include "vernr.h"
-#include "options.h"
-#include "keyboard_def.h"
+#include <globdef.h>
+#include <lconf.h>
+#include <thrdef.h>
+#include <ldef.h>
+#include <uidef.h>
+#include <screendef.h>
+#include <vernr.h>
+#include <options.h>
+#include <keyboard_def.h>
 
 int mouse_wheel_flag;
 

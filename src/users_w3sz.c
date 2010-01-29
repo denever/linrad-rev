@@ -15,6 +15,11 @@
 #include <stdlib.h>
 //added August 2007
 #include <time.h>
+#include <globdef.h>
+#include <screendef.h>
+#include <seldef.h>
+#include <uidef.h>
+#include <thrdef.h>
 
 #include "sigdef.h" // Remove this define in linrad-03.01 and later.
 // The definition of baseb_reset_counter is moved from sigdef.h to uidef.h

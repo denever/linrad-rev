@@ -1,4 +1,7 @@
 #include <time.h>
+#include <globdef.h>
+#include <uidef.h>
+#include <seldef.h>
 
 extern float users_extra_update_interval;
 

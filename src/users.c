@@ -1,4 +1,7 @@
-
+#include <globdef.h>
+#include <uidef.h>
+#include <screendef.h>
+#include <thrdef.h>
 
 // In case you want to use the WSE converters or the SDR-14
 // it is a good idea to fetch the routines for these

@@ -1,4 +1,10 @@
-
+#include <globdef.h>
+#include <hwaredef.h>
+#include <txdef.h>
+#include <uidef.h>
+#include <screendef.h>
+#include <fft1def.h>
+#include <sdrdef.h>
 
 char hware_outdat;
 char device_bits[256];  
