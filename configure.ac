@@ -12,7 +12,7 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 
 # Checks for header files.
-AC_HEADER_STDC	    
+AC_HEADER_STDC
 
 # Checks for libraries: libasound2, libx11, libxext
 
@@ -45,10 +45,5 @@ AC_SUBST(XPROTO_CFLAGS)
 
 AC_CONFIG_FILES([Makefile
 		 include/Makefile
-                 src/Makefile])
+		 src/Makefile])
 AC_OUTPUT
-
-# Checks for library functions.
-#AC_PROG_GCC_TRADITIONAL
-#AC_CHECK_FUNCS([floor])
-#AC_PROG_RANLIB
