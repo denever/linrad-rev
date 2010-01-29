@@ -1,5 +1,3 @@
-
-#include "conf.h"
 void control_hware(void);
 void set_hardware_rx_gain(void);
 void set_hardware_rx_frequency(void);
@@ -10,14 +8,19 @@ void hware_hand_key(void);
 
 
 extern int hware_flag;
-
 extern char hware_error_flag;
 extern double hware_time;
 extern int parport_status;
 extern int parport_control;
 extern int parport_ack;
 extern int parport_ack_sign;
-
+extern char rx_hware_init_flag;
+extern int sdr14_att_counter;
+extern int sdr14_nco_counter;
+extern int perseus_att_counter;
+extern int perseus_nco_counter;
+extern int fg_new_band;
+extern int fg_old_band;
 
 #if (LUSERS_DEFINES_PRESENT == 1 && OSNUM == OS_FLAG_LINUX)
 #include "users_hwaredef.h"
