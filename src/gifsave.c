@@ -1,11 +1,9 @@
-
 #include <unistd.h>
 #include <string.h>
-#include "globdef.h"
-#include "uidef.h"
-#include "thrdef.h"
-#include "conf.h"
-#include "options.h"
+#include <globdef.h>
+#include <uidef.h>
+#include <thrdef.h>
+#include <options.h>
 
 #define MAXPIX (screen_width*screen_height)
 unsigned char *screencopy;
