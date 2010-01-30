@@ -1,0 +1,7 @@
+getiq.sl
+fftasm.sl
+fft2mmxb.sl
+fft2mmxa.sl
+fft2mmxc.sl
+split.sl
+simdasm.sl

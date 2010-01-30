@@ -389,12 +389,7 @@ char s[80];
 clear_screen();
 if(allow_parport == FALSE)
   {
-#if(OSNUM == OS_FLAG_LINUX)
   lirerr(1063);
-#endif
-#if(OSNUM == OS_FLAG_WINDOWS)
-  lirerr(1064);
-#endif
   return;
   }
 clear_hware_data();
@@ -736,9 +731,6 @@ fg.passband_direction=rx_fqinfo[fg_new_band].direction;
 //
 // Here the frequency scale can be inverted on some condition.
 // Possibly a new user parameter....
-//#if(OSNUM == OS_FLAG_LINUX)
-//if(ui.use_alsa == TRUE)fg.passband_direction*=-1;
-//#endif
 fft1_direction=fg.passband_direction;
 // Send a message to the screen thread to redraw the frequency scale
 // on the main spectrum.

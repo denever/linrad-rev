@@ -1,11 +1,10 @@
 
 #include <pthread.h>
 #include <semaphore.h>
-#include "globdef.h"
-#include "lconf.h"
-#include "thrdef.h"
-#include "caldef.h"
-#include "ldef.h"
+#include <globdef.h>
+#include <thrdef.h>
+#include <caldef.h>
+#include <ldef.h>
 
 pthread_mutex_t parport_lock;
 

@@ -20,13 +20,12 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <termios.h>
-#include "globdef.h"
-#include "thrdef.h"
-#include "uidef.h"
-#include "lconf.h"
-#include "xdef.h"
-#include "ldef.h"
-#include "hwaredef.h"
+#include <globdef.h>
+#include <thrdef.h>
+#include <uidef.h>
+#include <xdef.h>
+#include <ldef.h>
+#include <hwaredef.h>
 struct termios old_options;
 #ifdef BSD
 char serport_name[]="/dev/ttyd?";

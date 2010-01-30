@@ -1,31 +1,21 @@
-
 #include <string.h>
+#include <globdef.h>
 
-
-#include "globdef.h"
-#if(OSNUM == OS_FLAG_WINDOWS)
-#include <winsock.h>
-#define INVSOCK INVALID_SOCKET
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
 #define INVSOCK -1
 #include "rusage.h"
 #include <unistd.h>
-#endif
-
-#include "uidef.h"
-#include "screendef.h"
-#include "fft1def.h"
-#include "fft2def.h"
-#include "fft3def.h"
-#include "blnkdef.h"
-#include "sigdef.h"
-#include "seldef.h"
-#include "thrdef.h"
-#include "hwaredef.h"
-#include "conf.h"
-#include "txdef.h"
-#include "options.h"
+#include <uidef.h>
+#include <screendef.h>
+#include <fft1def.h>
+#include <fft2def.h>
+#include <fft3def.h>
+#include <blnkdef.h>
+#include <sigdef.h>
+#include <seldef.h>
+#include <thrdef.h>
+#include <hwaredef.h>
+#include <txdef.h>
+#include <options.h>
 
 // In case there is a users_extra.c present we insert it here.
 #if (USERS_EXTRA_PRESENT == 1)
@@ -2187,9 +2177,7 @@ int screen_overload_count;
 #if (USERS_EXTRA_PRESENT == 1)
 double users_extra_time;
 #endif
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_SCREEN);
-#endif
 screen_overload_count=0;
 local_reset=workload_reset_flag;
 local_bg_yborder=bg.yborder;

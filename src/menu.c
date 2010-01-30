@@ -4,32 +4,23 @@
 #include <string.h>
 
 
-#include "globdef.h"
-#if(OSNUM == OS_FLAG_WINDOWS)
-#include <winsock.h>
-#define INVSOCK INVALID_SOCKET
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
+#include <globdef.h>
+#include <uidef.h> 
+#include <fft1def.h>
+#include <fft2def.h>
+#include <screendef.h>
+#include <powtdef.h>
+#include <vernr.h>
+#include <sigdef.h>
+#include <seldef.h>
+#include <thrdef.h>
+#include <sdrdef.h>
+#include <caldef.h>
+#include <keyboard_def.h>
+#include <txdef.h>
+#include <options.h>
+
 #define INVSOCK -1
-#endif
-
-
-#include "uidef.h" 
-#include "fft1def.h"
-#include "fft2def.h"
-#include "screendef.h"
-#include "powtdef.h"
-#include "vernr.h"
-#include "sigdef.h"
-#include "seldef.h"
-#include "thrdef.h"
-#include "sdrdef.h"
-#include "caldef.h"
-#include "conf.h"
-#include "keyboard_def.h"
-#include "txdef.h"
-#include "options.h"
-
 extern int tune_bytes;
 #if (USERS_EXTRA_PRESENT == 1)
 extern void init_users_extra(void);
@@ -1588,9 +1579,7 @@ do_normal_rx:;
       workload=-1;
       usercontrol_mode=USR_NORMAL_RX;
 #if RUSAGE_OLD != TRUE
-#if OSNUM == OS_FLAG_LINUX
       for(i=0; i<THREAD_MAX; i++)thread_pid[i]=0;
-#endif
 #endif
       if(ui.network_flag!=0)
         {
@@ -1759,16 +1748,12 @@ normal_rx:;
       local_workload_reset=workload_reset_flag;
 #if RUSAGE_OLD != TRUE
       lir_system_times(&cpu_time1, &total_time1);
-#if OSNUM == OS_FLAG_LINUX
       current_time();
       for(i=0; i<THREAD_MAX; i++)
         {
         thread_tottim1[i]=recent_time;
         thread_cputim1[i]=0;
         }
-#endif
-#if OSNUM == OS_FLAG_WINDOWS
-#endif
 #endif            
       while( !kill_all_flag &&
                thread_status_flag[THREAD_USER_COMMAND]==THRFLAG_ACTIVE &&
@@ -1806,12 +1791,7 @@ loadprt:;
           current_time();
           for(i=0; i<THREAD_MAX; i++)
             {
-#if OSNUM == OS_FLAG_LINUX
             if(thread_pid[i] != 0)
-#endif
-#if OSNUM == OS_FLAG_WINDOWS
-            if(thread_command_flag[i]!=THRFLAG_NOT_ACTIVE)
-#endif
               {
               thread_tottim2[i]=recent_time;
               thread_cputim2[i]=lir_get_thread_time(i);

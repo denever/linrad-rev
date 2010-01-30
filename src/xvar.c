@@ -1,13 +1,11 @@
-
 #include <pthread.h>
 #include <semaphore.h>
 #include <X11/cursorfont.h>
 #include <X11/Xutil.h>
-#include "globdef.h"
-#include "thrdef.h"
-#include "lconf.h"
-#include "xdef.h"
-#include "ldef.h"
+#include <globdef.h>
+#include <thrdef.h>
+#include <xdef.h>
+#include <ldef.h>
 
 #if SHM_INSTALLED == 1
 #include <X11/extensions/XShm.h>

@@ -4,22 +4,21 @@
 #include <string.h>
 #include <fcntl.h>
 
-#include "globdef.h"
-#include "uidef.h"
-#include "fft1def.h"
-#include "fft2def.h"
-#include "fft3def.h"
-#include "screendef.h"
-#include "seldef.h"
-#include "sigdef.h"
-#include "hwaredef.h"
-#include "thrdef.h"
-#include "conf.h"
-#include "rusage.h"
-#include "options.h"
-#include "blnkdef.h"
-#include "txdef.h"
-#include "vernr.h"
+#include <globdef.h>
+#include <uidef.h>
+#include <fft1def.h>
+#include <fft2def.h>
+#include <fft3def.h>
+#include <screendef.h>
+#include <seldef.h>
+#include <sigdef.h>
+#include <hwaredef.h>
+#include <thrdef.h>
+#include <rusage.h>
+#include <options.h>
+#include <blnkdef.h>
+#include <txdef.h>
+#include <vernr.h>
 
 #define RG_MIN_WIDTH (10*text_width)
 #define RADAR_SCALE_ZERO 1
@@ -104,9 +103,7 @@ int pulsefreq_flag;
 float t1, ref_ston, tx_noise_floor;
 double dt1, disksync_time;
 double total_time1;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_RADAR);
-#endif
 #if RUSAGE_OLD == TRUE
 local_workload_counter=workload_counter;
 #endif

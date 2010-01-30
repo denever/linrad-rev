@@ -23,23 +23,8 @@
 
 #include <ctype.h>
 #include <unistd.h>
-#include "globdef.h"
+#include <globdef.h>
 
-#if(OSNUM == OS_FLAG_WINDOWS)
-#include <windows.h>
-#include <winsock.h>
-#define RECV_FLAG 0
-typedef struct{
-struct in_addr imr_multiaddr;   /* IP multicast address of group */
-struct in_addr imr_interface;   /* local IP address of interface */
-}IP_MREQ;
-WSADATA wsadata;
-#define IP_ADD_MEMBERSHIP 12
-#define INVSOCK INVALID_SOCKET
-#define CLOSE_FD closesocket
-#endif
-
-#if(OSNUM == OS_FLAG_LINUX)
 #include <fcntl.h>
 #include "rusage.h"
 #include <sys/ioctl.h>
@@ -64,18 +49,17 @@ WSADATA wsadata;
 #define IP_MREQ struct ip_mreq
 #define INVSOCK -1
 #define CLOSE_FD close
-#endif
 
-#include "uidef.h"
-#include "fft1def.h"
-#include "fft2def.h"
-#include "vernr.h"
-#include "caldef.h"
-#include "screendef.h"
-#include "thrdef.h"
-#include "keyboard_def.h"
-#include "seldef.h"
-#include "options.h"
+#include <uidef.h>
+#include <fft1def.h>
+#include <fft2def.h>
+#include <vernr.h>
+#include <caldef.h>
+#include <screendef.h>
+#include <thrdef.h>
+#include <keyboard_def.h>
+#include <seldef.h>
+#include <options.h>
 
 // ********************  addresses and ports  ***************************
 // These defininitions should be in agreement with current rules.
@@ -140,9 +124,6 @@ int net_write_errors;
 void chk_send(int fd, char *buf, int len, struct sockaddr *to,
                                                   int tolen)
 {       
-#if(OSNUM == OS_FLAG_WINDOWS)
-int ierr;       
-#endif
 double dt1;
 char s[80];
 int kk, net_written;
@@ -156,13 +137,7 @@ if(net_written==len)return;
 // to see if the situation improves.
 if(net_written == -1)
   {
-#if(OSNUM == OS_FLAG_WINDOWS)
-  ierr=WSAGetLastError();
-  if(ierr != WSAEWOULDBLOCK)goto show_errors;  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   if(errno != EAGAIN)goto show_errors;
-#endif
   kk=0;
   }
 else
@@ -182,13 +157,7 @@ while(dt1 > 0)
   net_written=sendto(fd, &buf[kk] ,len-kk, 0, to, tolen);  
   if(net_written == -1)
     {
-#if(OSNUM == OS_FLAG_WINDOWS)
-    ierr=WSAGetLastError();
-    if(ierr != WSAEWOULDBLOCK)goto show_errors;  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
     if(errno != EAGAIN)goto show_errors;
-#endif
     }
   else
     {
@@ -208,107 +177,6 @@ wg_error(s,WGERR_NETWR);
 #if DUMPFILE == TRUE
 // ***********************************************
 DEB"\nNetwork write error: ");
-#if(OSNUM == OS_FLAG_WINDOWS)
-DEB"sendto error code %d ",ierr);
-switch (ierr)
-  {
-  case WSAEINVAL:
-  DEB"WSAEINVAL");
-  break;
-
-  case WSAEINTR:
-  DEB"WSAEINTR");
-  break;
-
-  case WSAEINPROGRESS:
-  DEB"WSAEINPROGRESS");
-  break;
-  
-  case WSAEFAULT:
-  DEB"WSAEFAULT");
-  break;
-
-  case WSAENETRESET:
-  DEB"WSAENETRESET");
-  break;
-
-  case WSAENOBUFS:
-  DEB"WSAENOBUFS");
-  break;
-
-  case WSAENOTCONN:
-  DEB"WSAENOTCONN");
-  break;
-
-  case WSAENOTSOCK:
-  DEB"WSAENOTSOCK");
-  break;
-
-  case WSAEOPNOTSUPP:
-  DEB"WSAEOPNOTSUPP");
-  break;
-
-  case WSAESHUTDOWN:
-  DEB"WSAESHUTDOWN");
-  break;
-
-  case WSAEWOULDBLOCK:
-  DEB"WSAEWOULDBLOCK");
-  break;
-
-  case WSAEMSGSIZE:
-  DEB"WSAEMSGSIZE");
-  break;
-
-  case WSAECONNABORTED:
-  DEB"WSAECONNABORTED");
-  break;
-
-  case WSAECONNRESET:
-  DEB"WSAECONNRESET");
-  break;
-
-  case WSAEADDRNOTAVAIL:
-  DEB"WSAEADDRNOTAVAIL");
-  break;
-
-  case WSAENETUNREACH:
-  DEB"WSAENETUNREACH");
-  break;
-
-  case WSAEHOSTUNREACH:
-  DEB"WSAEHOSTUNREACH");
-  break;
-
-  case WSAETIMEDOUT:
-  DEB"WSAETIMEDOUT");
-  break;
-
-  case WSANOTINITIALISED:
-  DEB"WSANOTINITIALISED");
-  break;
-  
-  case WSAENETDOWN:
-  DEB"WSAENETDOWN");
-  break;
-  
-  case WSAEACCES:
-  DEB"WSAEACCES");
-  break;
-  
-  case WSAEAFNOSUPPORT:
-  DEB"WSAEAFNOSUPPORT");
-  break;
-  
-  case WSAEDESTADDRREQ:
-  DEB"WSAEDESTADDRREQ");
-  break;
-  
-  default:
-  DEB"unknown");
-  }
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
 switch (errno)
   {
   case ENETUNREACH:
@@ -326,7 +194,6 @@ switch (errno)
   default:
   DEB" errno=%d",errno);
   }
-#endif
 #endif
 }
 
@@ -393,9 +260,6 @@ for(i=0; i<MAX_NET_FD; i++)
     net_fds[i]=INVSOCK;
     }
   }
-#if(OSNUM == OS_FLAG_WINDOWS)
-WSACleanup();
-#endif      
 }
 
 void net_input_error(void)
@@ -664,153 +528,151 @@ while( !kill_all_flag )
 void thread_rx_fft1_netinput(void)
 {
 #if RUSAGE_OLD == TRUE
-int local_workload_counter;
+  int local_workload_counter;
 #endif
-int i, k;
-int read_time;
-float *net_floatbuf;
-double dt1, read_start_time,total_reads;
-double total_time1,total_time2;
-struct sockaddr_in rx_addr;
-unsigned int addrlen;
-int timing_loop_counter,timing_loop_counter_max,initial_skip_flag;
-unsigned int netrd_fft1_ia;
-int netrd_fft1_ib;
-unsigned short int block_cnt;
-#if OSNUM == OS_FLAG_LINUX
-clear_thread_times(THREAD_RX_FFT1_NETINPUT);
-#endif
+  int i, k;
+  int read_time;
+  float *net_floatbuf;
+  double dt1, read_start_time,total_reads;
+  double total_time1,total_time2;
+  struct sockaddr_in rx_addr;
+  unsigned int addrlen;
+  int timing_loop_counter,timing_loop_counter_max,initial_skip_flag;
+  unsigned int netrd_fft1_ia;
+  int netrd_fft1_ib;
+  unsigned short int block_cnt;
+  clear_thread_times(THREAD_RX_FFT1_NETINPUT);
 #if RUSAGE_OLD == TRUE
-local_workload_counter=workload_counter;
+  local_workload_counter=workload_counter;
 #endif
-while( all_threads_started != TRUE)
-  {
-  lir_sleep(30000);
-  if(kill_all_flag) goto fft1net_rxin_error_exit;
-  }   
-net_floatbuf=(void*)&net_rxdata_fft1.buf[0];
-total_time1=current_time();
-read_start_time=total_time1;
-rxin_local_workload_reset=workload_reset_flag;
-timing_loop_counter_max=ui.rx_ad_speed*2*sizeof(float)
-                          /(NET_MULTICAST_PAYLOAD*(1-fft1_interleave_ratio));
-if( (ui.rx_input_mode&DWORD_INPUT) != 0)timing_loop_counter_max*=2;
-timing_loop_counter=2.5*timing_loop_counter_max;
-screen_loop_counter_max=0.1*timing_loop_counter_max;
-if(screen_loop_counter_max==0)screen_loop_counter_max=1;
-screen_loop_counter=timing_loop_counter_max;
-total_reads=0;
-initial_skip_flag=1;
-addrlen=sizeof(rx_addr);
-netrd_fft1_ia=0;        
-lir_netread_rxin(&net_rxdata_fft1);
-if(kill_all_flag) goto fft1net_rxin_error_exit;
-netrd_fft1_ib=0;
-block_cnt=net_rxdata_fft1.block_no;
-thread_status_flag[THREAD_RX_FFT1_NETINPUT]=THRFLAG_ACTIVE;
-while(thread_command_flag[THREAD_RX_FFT1_NETINPUT] == THRFLAG_ACTIVE)
-  {
-readfft1:;      
-#if RUSAGE_OLD == TRUE
-  if(local_workload_counter != workload_counter)
+  while( all_threads_started != TRUE)
     {
-    local_workload_counter=workload_counter;
-    make_thread_times(THREAD_RX_FFT1_NETINPUT);
-    }
-#endif
-  timing_loop_counter--;
-  if(timing_loop_counter == 0)
-    {
-    timing_loop_counter=timing_loop_counter_max;
-    total_time2=current_time();
-    if(initial_skip_flag != 0)
-      {
-      read_start_time=total_time2;
-      total_reads=0;
-      initial_skip_flag=0;
-      }
-    else
-      {
-      dt1=total_time2-read_start_time;
-      measured_ad_speed=(1-fft1_interleave_ratio)*NET_MULTICAST_PAYLOAD*
-                                 total_reads/(dt1*2*sizeof(float));
-      }
-    }
-  while(netrd_fft1_ia<NET_MULTICAST_PAYLOAD/sizeof(float))
-    {
-    fft1_float[fft1_pa+netrd_fft1_ib  ]=net_floatbuf[netrd_fft1_ia  ];
-    netrd_fft1_ib++;
-    netrd_fft1_ia++;
-    if(netrd_fft1_ib >= fft1_block)goto new_transform;
-    }
-  netrd_fft1_ia=0;
+      lir_sleep(30000);
+      if(kill_all_flag) goto fft1net_rxin_error_exit;
+    }   
+  net_floatbuf=(void*)&net_rxdata_fft1.buf[0];
+  total_time1=current_time();
+  read_start_time=total_time1;
+  rxin_local_workload_reset=workload_reset_flag;
+  timing_loop_counter_max=ui.rx_ad_speed*2*sizeof(float)
+    /(NET_MULTICAST_PAYLOAD*(1-fft1_interleave_ratio));
+  if( (ui.rx_input_mode&DWORD_INPUT) != 0)timing_loop_counter_max*=2;
+  timing_loop_counter=2.5*timing_loop_counter_max;
+  screen_loop_counter_max=0.1*timing_loop_counter_max;
+  if(screen_loop_counter_max==0)screen_loop_counter_max=1;
+  screen_loop_counter=timing_loop_counter_max;
+  total_reads=0;
+  initial_skip_flag=1;
+  addrlen = sizeof(rx_addr);
+  netrd_fft1_ia=0;        
   lir_netread_rxin(&net_rxdata_fft1);
-  total_reads++;
   if(kill_all_flag) goto fft1net_rxin_error_exit;
-  block_cnt++;
-  k=net_rxdata_fft1.ptr/(int)(sizeof(float));
-  if( block_cnt != net_rxdata_fft1.block_no || netrd_fft1_ib!=k)
-    {
-// The block number (ot data pointer) is incorrect. Some data is lost!!
-    net_input_error();
-    i=net_rxdata_fft1.block_no-block_cnt;
-    i=(i+0x10000)&0xffff;
-    i*=NET_MULTICAST_PAYLOAD/sizeof(float);
-    i+=k-netrd_fft1_ib;
-    if(i>0 && i<2*fft1_block)
-      {
-// We have lost less than two transforms.
-// Fill in zeroes and update pointers. The user may not notice.....      
-      while(i>0)
-        {
-        i--;
-        fft1_float[fft1_pa+netrd_fft1_ib  ]=0;
-        netrd_fft1_ib++;
-        netrd_fft1_ia++;
-        if(netrd_fft1_ia>=NET_MULTICAST_PAYLOAD/sizeof(float))
-          {
-          netrd_fft1_ia=0;
-          block_cnt++;
-          }
-        if(netrd_fft1_ib >= fft1_block)
-          {
-          netrd_fft1_ib=0;
-          fft1_pa=(fft1_pa+fft1_block)&fft1_mask;  
-          fft1_na=fft1_pa/fft1_block;
-          if(fft1_nm != fft1n_mask)fft1_nm++;
-          lir_sem_post(SEM_TIMF1);
-          }
-        }
-      }
-    else
-      {  
-      block_cnt=net_rxdata_fft1.block_no;
-      netrd_fft1_ib=net_rxdata_fft1.ptr/sizeof(float);
-      }
-    }
-  goto readfft1;
-new_transform:;
   netrd_fft1_ib=0;
-  fft1_pa=(fft1_pa+fft1_block)&fft1_mask;  
-  fft1_na=fft1_pa/fft1_block;
-  if(fft1_nm != fft1n_mask)fft1_nm++;
-  lir_sem_post(SEM_TIMF1);
-  if(kill_all_flag) goto fft1net_rxin_error_exit;
-  read_time=ms_since_midnight(FALSE);
-  if(abs(latest_listsend_time-read_time) > 1500)
+  block_cnt=net_rxdata_fft1.block_no;
+  thread_status_flag[THREAD_RX_FFT1_NETINPUT]=THRFLAG_ACTIVE;
+  while(thread_command_flag[THREAD_RX_FFT1_NETINPUT] == THRFLAG_ACTIVE)
     {
-    latest_listsend_time=read_time;
-    net_send_slaves_freq();
+    readfft1:;      
+#if RUSAGE_OLD == TRUE
+      if(local_workload_counter != workload_counter)
+	{
+	  local_workload_counter=workload_counter;
+	  make_thread_times(THREAD_RX_FFT1_NETINPUT);
+	}
+#endif
+      timing_loop_counter--;
+      if(timing_loop_counter == 0)
+	{
+	  timing_loop_counter=timing_loop_counter_max;
+	  total_time2=current_time();
+	  if(initial_skip_flag != 0)
+	    {
+	      read_start_time=total_time2;
+	      total_reads=0;
+	      initial_skip_flag=0;
+	    }
+	  else
+	    {
+	      dt1=total_time2-read_start_time;
+	      measured_ad_speed=(1-fft1_interleave_ratio)*NET_MULTICAST_PAYLOAD*
+		total_reads/(dt1*2*sizeof(float));
+	    }
+	}
+      while(netrd_fft1_ia<NET_MULTICAST_PAYLOAD/sizeof(float))
+	{
+	  fft1_float[fft1_pa+netrd_fft1_ib  ]=net_floatbuf[netrd_fft1_ia  ];
+	  netrd_fft1_ib++;
+	  netrd_fft1_ia++;
+	  if(netrd_fft1_ib >= fft1_block)goto new_transform;
+	}
+      netrd_fft1_ia=0;
+      lir_netread_rxin(&net_rxdata_fft1);
+      total_reads++;
+      if(kill_all_flag) goto fft1net_rxin_error_exit;
+      block_cnt++;
+      k=net_rxdata_fft1.ptr/(int)(sizeof(float));
+      if( block_cnt != net_rxdata_fft1.block_no || netrd_fft1_ib!=k)
+	{
+	  // The block number (ot data pointer) is incorrect. Some data is lost!!
+	  net_input_error();
+	  i=net_rxdata_fft1.block_no-block_cnt;
+	  i=(i+0x10000)&0xffff;
+	  i*=NET_MULTICAST_PAYLOAD/sizeof(float);
+	  i+=k-netrd_fft1_ib;
+	  if(i>0 && i<2*fft1_block)
+	    {
+	      // We have lost less than two transforms.
+	      // Fill in zeroes and update pointers. The user may not notice.....      
+	      while(i>0)
+		{
+		  i--;
+		  fft1_float[fft1_pa+netrd_fft1_ib  ]=0;
+		  netrd_fft1_ib++;
+		  netrd_fft1_ia++;
+		  if(netrd_fft1_ia>=NET_MULTICAST_PAYLOAD/sizeof(float))
+		    {
+		      netrd_fft1_ia=0;
+		      block_cnt++;
+		    }
+		  if(netrd_fft1_ib >= fft1_block)
+		    {
+		      netrd_fft1_ib=0;
+		      fft1_pa=(fft1_pa+fft1_block)&fft1_mask;  
+		      fft1_na=fft1_pa/fft1_block;
+		      if(fft1_nm != fft1n_mask)fft1_nm++;
+		      lir_sem_post(SEM_TIMF1);
+		    }
+		}
+	    }
+	  else
+	    {  
+	      block_cnt=net_rxdata_fft1.block_no;
+	      netrd_fft1_ib=net_rxdata_fft1.ptr/sizeof(float);
+	    }
+	}
+      goto readfft1;
+    new_transform:;
+      netrd_fft1_ib=0;
+      fft1_pa=(fft1_pa+fft1_block)&fft1_mask;  
+      fft1_na=fft1_pa/fft1_block;
+      if(fft1_nm != fft1n_mask)fft1_nm++;
+      lir_sem_post(SEM_TIMF1);
+      if(kill_all_flag) goto fft1net_rxin_error_exit;
+      read_time=ms_since_midnight(FALSE);
+      if(abs(latest_listsend_time-read_time) > 1500)
+	{
+	  latest_listsend_time=read_time;
+	  net_send_slaves_freq();
+	}
     }
-  }
-fft1net_rxin_error_exit:;
-CLOSE_FD(netfd.rec_rx);
-netfd.rec_rx=-1;
-thread_status_flag[THREAD_RX_FFT1_NETINPUT]=THRFLAG_RETURNED;
-while(thread_command_flag[THREAD_RX_FFT1_NETINPUT] != THRFLAG_NOT_ACTIVE)
-  {
-  lir_sleep(1000);
-  }
+ fft1net_rxin_error_exit:;
+  CLOSE_FD(netfd.rec_rx);
+  netfd.rec_rx=-1;
+  thread_status_flag[THREAD_RX_FFT1_NETINPUT]=THRFLAG_RETURNED;
+  while(thread_command_flag[THREAD_RX_FFT1_NETINPUT] != THRFLAG_NOT_ACTIVE)
+    {
+      lir_sleep(1000);
+    }
 }
 
 
@@ -826,12 +688,7 @@ char *rxin_char;
 double dt1, read_start_time,total_reads;
 double total_time1,total_time2;
 int timing_loop_counter,timing_loop_counter_max,initial_skip_flag;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_RX_RAW_NETINPUT);
-#endif
-#if RUSAGE_OLD == TRUE
-local_workload_counter=workload_counter;
-#endif
 while( all_threads_started != TRUE)
   {
   lir_sleep(30000);
@@ -1133,12 +990,7 @@ int client_len;
 struct sockaddr_in client_address;
 int netdat[FFT1_INFOSIZ];
 int listupd_count;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_LIR_SERVER);
-#endif
-#if RUSAGE_OLD == TRUE
-local_workload_counter=workload_counter;
-#endif
 net_start_time=current_time();
 listupd_count=0;
 thread_status_flag[THREAD_LIR_SERVER]=THRFLAG_ACTIVE;
@@ -1634,14 +1486,7 @@ int nbytes;
 char msgx[sizeof(NET_RX_STRUCT)+2];
 NET_RX_STRUCT *msg;
 int *net_fds;
-#if(OSNUM == OS_FLAG_LINUX)
 unsigned int addrlen;
-#endif
-#if(OSNUM == OS_FLAG_WINDOWS)
-int addrlen;
-unsigned long int on;  
-on=1;  
-#endif
 net_fds=(void*)(&netfd);
 for(i=0; i<MAX_NET_FD; i++)
   {
@@ -1685,13 +1530,6 @@ if(read_netpar()==FALSE)
   return;
   }
 net_addr_strings(FALSE);
-#if(OSNUM == OS_FLAG_WINDOWS)
-if(WSAStartup(2, &wsadata) != 0)
-  {
-  lirerr(1263);
-  return;   
-  }
-#endif
 if( (ui.network_flag & NET_RXOUT_RAW16) != 0)
   {
   if ((netfd.send_rx_raw16=socket(AF_INET,SOCK_DGRAM,0)) == INVSOCK) 
@@ -1699,12 +1537,7 @@ if( (ui.network_flag & NET_RXOUT_RAW16) != 0)
     lirerr(1249);
     return;
     }
-#if(OSNUM == OS_FLAG_WINDOWS)
-  if (ioctlsocket(netfd.send_rx_raw16, FIONBIO, &on) < 0)lirerr(889666);  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   fcntl(netfd.send_rx_raw16, F_SETFD, O_NONBLOCK);
-#endif  
   memset(&netsend_addr_rxraw16,0,sizeof(netsend_addr_rxraw16));
   netsend_addr_rxraw16.sin_family=AF_INET;
   netsend_addr_rxraw16.sin_addr.s_addr=inet_addr(netsend_rx_multi_group);
@@ -1718,12 +1551,7 @@ if( (ui.network_flag & NET_RXOUT_RAW18) != 0)
     lirerr(1249);
     return;
     }
-#if(OSNUM == OS_FLAG_WINDOWS)
-  if (ioctlsocket(netfd.send_rx_raw18, FIONBIO, &on) < 0)lirerr(889666);  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   fcntl(netfd.send_rx_raw18, F_SETFD, O_NONBLOCK);
-#endif  
   memset(&netsend_addr_rxraw18,0,sizeof(netsend_addr_rxraw18));
   netsend_addr_rxraw18.sin_family=AF_INET;
   netsend_addr_rxraw18.sin_addr.s_addr=inet_addr(netsend_rx_multi_group);
@@ -1737,12 +1565,7 @@ if( (ui.network_flag & NET_RXOUT_RAW24) != 0)
     lirerr(1249);
     return;
     }
-#if(OSNUM == OS_FLAG_WINDOWS)
-  if (ioctlsocket(netfd.send_rx_raw24, FIONBIO, &on) < 0)lirerr(889666);  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   fcntl(netfd.send_rx_raw24, F_SETFD, O_NONBLOCK);
-#endif  
   memset(&netsend_addr_rxraw24,0,sizeof(netsend_addr_rxraw24));
   netsend_addr_rxraw24.sin_family=AF_INET;
   netsend_addr_rxraw24.sin_addr.s_addr=inet_addr(netsend_rx_multi_group);
@@ -1756,12 +1579,7 @@ if( (ui.network_flag & NET_RXOUT_FFT1) != 0)
     lirerr(1249);
     return;
     }
-#if(OSNUM == OS_FLAG_WINDOWS)
-  if (ioctlsocket(netfd.send_rx_fft1, FIONBIO, &on) < 0)lirerr(889666);  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   fcntl(netfd.send_rx_fft1, F_SETFD, O_NONBLOCK);
-#endif  
   memset(&netsend_addr_rxfft1,0,sizeof(netsend_addr_rxfft1));
   netsend_addr_rxfft1.sin_family=AF_INET;
   netsend_addr_rxfft1.sin_addr.s_addr=inet_addr(netsend_rx_multi_group);
@@ -1775,12 +1593,7 @@ if( (ui.network_flag & NET_RXOUT_TIMF2) != 0)
     lirerr(1249);
     return;
     }
-#if(OSNUM == OS_FLAG_WINDOWS)
-  if (ioctlsocket(netfd.send_rx_timf2, FIONBIO, &on) < 0)lirerr(889666);  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   fcntl(netfd.send_rx_timf2, F_SETFD, O_NONBLOCK);
-#endif  
   memset(&netsend_addr_rxtimf2,0,sizeof(netsend_addr_rxtimf2));
   netsend_addr_rxtimf2.sin_family=AF_INET;
   netsend_addr_rxtimf2.sin_addr.s_addr=inet_addr(netsend_rx_multi_group);
@@ -1793,12 +1606,7 @@ if( (ui.network_flag & NET_RXOUT_FFT2) != 0)
     lirerr(1249);
     return;
     }
-#if(OSNUM == OS_FLAG_WINDOWS)
-  if (ioctlsocket(netfd.send_rx_fft2, FIONBIO, &on) < 0)lirerr(889666);  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   i=fcntl(netfd.send_rx_fft2, F_SETFL, O_NONBLOCK);
-#endif  
   memset(&netsend_addr_rxfft2,0,sizeof(netsend_addr_rxfft2));
   netsend_addr_rxfft2.sin_family=AF_INET;
   netsend_addr_rxfft2.sin_addr.s_addr=inet_addr(netsend_rx_multi_group);
@@ -1811,12 +1619,7 @@ if( (ui.network_flag & NET_RXOUT_BASEB) != 0)
     lirerr(1249);
     return;
     }
-#if(OSNUM == OS_FLAG_WINDOWS)
-  if (ioctlsocket(netfd.send_rx_baseb, FIONBIO, &on) < 0)lirerr(889666);  
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
   i=fcntl(netfd.send_rx_baseb, F_SETFL, O_NONBLOCK);
-#endif  
   memset(&netsend_addr_rxbaseb,0,sizeof(netsend_addr_rxbaseb));
   netsend_addr_rxbaseb.sin_family=AF_INET;
   netsend_addr_rxbaseb.sin_addr.s_addr=inet_addr(netsend_rx_multi_group);
@@ -2566,12 +2369,7 @@ int nread, rdbytes;
 int prtwait, netwait;
 netwait=0;
 prtwait=0;
-#if(OSNUM == OS_FLAG_LINUX)
 ioctl(netfd.master, FIONREAD, &network_nread);
-#endif
-#if(OSNUM == OS_FLAG_WINDOWS)
-network_nread=recv(netfd.master, buf, bytes, MSG_PEEK);
-#endif
 rdbytes=0;
 while(rdbytes < bytes)
   {
@@ -2604,12 +2402,7 @@ while(rdbytes < bytes)
     prtwait++;
     netwait++;
     lir_sleep(10000);
-#if(OSNUM == OS_FLAG_LINUX)
     ioctl(netfd.master, FIONREAD, &network_nread);
-#endif
-#if(OSNUM == OS_FLAG_WINDOWS)
-    network_nread=recv(netfd.master, buf+rdbytes, bytes-rdbytes, MSG_PEEK);
-#endif
     lir_refresh_screen();
     test_keyboard();
     if(kill_all_flag) return;
@@ -2661,13 +2454,7 @@ while(remaining > 0)
           }
         else
           {
-#if(OSNUM == OS_FLAG_WINDOWS)
-          i=WSAGetLastError();
-          DEB"\nerror code=%d",i);
-#endif
-#if(OSNUM == OS_FLAG_LINUX)
           DEB"\nerrno=%d",errno);
-#endif
           lirerr(1101);
           }    
         return;

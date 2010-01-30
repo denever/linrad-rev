@@ -600,12 +600,7 @@ char *ch;
 double dt1, dt2, read_start_time, ideal_block_count;
 double total_time1, total_time2;
 float t2;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_RX_FILE_INPUT);
-#endif
-#if RUSAGE_OLD == TRUE
-local_workload_counter=workload_counter;
-#endif
 screen_loop_counter_max=0.1*interrupt_rate;
 if(screen_loop_counter_max==0)screen_loop_counter_max=1;
 screen_loop_counter=screen_loop_counter_max;

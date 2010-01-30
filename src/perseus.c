@@ -21,17 +21,13 @@
 #include "vernr.h"
 #include "perseusdef.h"
 
-#include "thrdef.h"
-#include "sdrdef.h"
-#include "fft1def.h"
-#include "screendef.h"
-#include "hwaredef.h"
-#include "rusage.h"
-
-
-#if(OSNUM == OS_FLAG_LINUX)
+#include <thrdef.h>
+#include <sdrdef.h>
+#include <fft1def.h>
+#include <screendef.h>
+#include <hwaredef.h>
+#include <rusage.h>
 #include <unistd.h>
-#endif
 
 extern int perseus_att_counter;
 extern int perseus_nco_counter;
@@ -340,9 +336,7 @@ int timing_loop_counter,timing_loop_counter_max,initial_skip_flag;
 float t1;
 int local_perseus_att_counter;
 int local_perseus_nco_counter;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_PERSEUS_INPUT);
-#endif
 local_perseus_att_counter=perseus_att_counter;
 local_perseus_nco_counter=perseus_nco_counter;
 errcod=0;

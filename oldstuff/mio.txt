@@ -1,0 +1,14 @@
+rm dep_c.txt dep_s.txt
+
+for I in xmain.ol ui.ol uivar.ol fft1var.ol lsetad.ol hware.ol rxin.ol wide_graph.ol getiq.ol fft0.ol fft1.ol adtest.ol screenvar.ol sigvar.ol baseb_graph.ol afc_graph.ol hires_graph.ol fftasm.ol palette.ol gifsave.ol calibrate.ol calsub.ol calsub2.ol llsqvar.ol caliq.ol hwaredriver.ol llsq.ol sellim.ol selvar.ol mix1.ol fft2var.ol fft3var.ol fft2mmxb.ol fft2mmxa.ol fft2mmxc.ol spursub.ol network.ol buf.ol thrvar.ol radar.ol fft3.ol split.ol timf2.ol simdasm.ol fft1_re.ol fft1_complex.ol powtvar.ol wcw.ol blank1.ol calvar.ol blnkvar.ol fft2.ol pol_graph.ol modesub.ol help.ol afcsub.ol timing.ol mix2.ol spur.ol coherent.ol cohsub.ol eme.ol tune.ol txtest.ol mouse.ol freq_control.ol morse.ol lxsys.ol lvar.ol powtim.ol cwspeed.ol coh_osc.ol cwdetect.ol txvar.ol tx.ol menu.ol screen.ol sdrvar.ol xsys.ol sdr14.ol keyboard_var.ol xvar.ol meter_graph.ol fonts.ol screensub.ol tx_graph.ol txssb.ol wxsys.ol;do
+    echo "Searching for $I.."
+    if [ -n "$(grep "$I" Makefile.in | grep "\.c")" ];then
+    echo $(basename $I .ol).c >> dep_c.txt
+    fi
+    if [ -n "$(grep "$I" Makefile.in | grep "\.s ")" ];then
+    echo $(basename $I .ol).s >> dep_s.txt
+    fi
+    if [ -n "$(grep "$I" Makefile.in | grep "\.sl")" ];then
+    echo $(basename $I .ol).sl >> dep_sl.txt
+    fi
+done;

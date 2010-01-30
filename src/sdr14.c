@@ -425,12 +425,7 @@ int local_sdr14_att_counter;
 int local_sdr14_nco_counter;
 char ackmsg[3]={3,0x60,0};
 float t1;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_SDR14_INPUT);
-#endif
-#if RUSAGE_OLD == TRUE
-local_workload_counter=workload_counter;
-#endif
 local_sdr14_att_counter=sdr14_att_counter;
 local_sdr14_nco_counter=sdr14_nco_counter;
 j=0;

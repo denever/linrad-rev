@@ -1,26 +1,22 @@
-
-
 #include <unistd.h>
 #include <ctype.h>
 #include <string.h>
-#include "globdef.h"
-#include "uidef.h"
-#include "fft1def.h"
-#include "fft2def.h"
-#include "fft3def.h"
-#include "seldef.h"
-#include "sigdef.h"
-#include "screendef.h"
-#include "vernr.h"
-#include "thrdef.h"
-#include "conf.h"
-#include "keyboard_def.h"
-#include "blnkdef.h"
-#include "caldef.h"
-#include "txdef.h"
-#include "options.h"
-#include "rusage.h"
-
+#include <globdef.h>
+#include <uidef.h>
+#include <fft1def.h>
+#include <fft2def.h>
+#include <fft3def.h>
+#include <seldef.h>
+#include <sigdef.h>
+#include <screendef.h>
+#include <vernr.h>
+#include <thrdef.h>
+#include <keyboard_def.h>
+#include <blnkdef.h>
+#include <caldef.h>
+#include <txdef.h>
+#include <options.h>
+#include <rusage.h>
 
 
 #if (USERS_EXTRA_PRESENT == 1)
@@ -1049,17 +1045,7 @@ if( i <= 4 || (i > 4 && strcmp(&s[i-4],fxt) !=0))
   {
   strcpy(&s[i],fxt);
   }
-#if(OSNUM == OS_FLAG_LINUX)
 if(s[0] != '/' && s[0]!= '.')
-#endif
-#if(OSNUM == OS_FLAG_WINDOWS)
-while(s[k]!=0)
-  {
-  if(s[k]==':')j=1;
-  k++;
-  }
-if(j==0)
-#endif  
   {
   sprintf(fnm,"%s%s",dir,s);  
   }

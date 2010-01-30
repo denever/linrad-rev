@@ -1,16 +1,14 @@
-
 #include <vga.h>
 #include <vgagl.h>
 #include <semaphore.h>
 #include <pthread.h>
 #include <ctype.h>
-#include "globdef.h"
-#include "lconf.h"
-#include "thrdef.h"
-#include "ldef.h"
-#include "uidef.h"
-#include "screendef.h"
-#include "keyboard_def.h"
+#include <globdef.h>
+#include <thrdef.h>
+#include <ldef.h>
+#include <uidef.h>
+#include <screendef.h>
+#include <keyboard_def.h>
 
 void lir_set_title(char *s)
 {

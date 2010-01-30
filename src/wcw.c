@@ -1,24 +1,22 @@
-
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
 
-#include "globdef.h"
-#include "uidef.h"
-#include "fft1def.h"
-#include "fft2def.h"
-#include "fft3def.h"
-#include "screendef.h"
-#include "seldef.h"
-#include "sigdef.h"
-#include "hwaredef.h"
-#include "thrdef.h"
-#include "conf.h"
-#include "rusage.h"
-#include "options.h"
-#include "blnkdef.h"
-#include "txdef.h"
+#include <globdef.h>
+#include <uidef.h>
+#include <fft1def.h>
+#include <fft2def.h>
+#include <fft3def.h>
+#include <screendef.h>
+#include <seldef.h>
+#include <sigdef.h>
+#include <hwaredef.h>
+#include <thrdef.h>
+#include <rusage.h>
+#include <options.h>
+#include <blnkdef.h>
+#include <txdef.h>
 
 #define MOUSE_MIN_TIME 0.05
 
@@ -622,9 +620,8 @@ int local_fft1_sumsq_pa;
 int k;
 int local_ampinfo_reset;
 int local_timf2_px;
-#if OSNUM == OS_FLAG_LINUX
+
 clear_thread_times(THREAD_WIDEBAND_DSP);
-#endif
 #if RUSAGE_OLD == TRUE
 local_workload_counter=workload_counter;
 #endif

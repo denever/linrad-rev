@@ -15,17 +15,10 @@
 #include "rusage.h"
 #include "sdrdef.h"
 
-#if(OSNUM == OS_FLAG_LINUX)
 #include <pthread.h>
 #include <semaphore.h>
-#include "lconf.h"
-#include "xdef.h"
-#include "ldef.h"
-#endif
-
-#if(OSNUM == OS_FLAG_WINDOWS)
-void win_semaphores(void);
-#endif
+#include <xdef.h>
+#include <ldef.h>
 
 double q_time;
 void qt1(char *cc)
@@ -66,9 +59,6 @@ for(i=0; i<THREAD_MAX; i++)
     if(thread_waitsem[i] != -1)lir_sem_post(thread_waitsem[i]);
     }
   }
-#if(OSNUM == OS_FLAG_WINDOWS)
-win_semaphores();
-#endif    
 if(k==0)goto ok_exit;
 j=0;
 while(j<30)
@@ -295,9 +285,7 @@ void user_command(void)
 int local_workload_counter;
 #endif
 int i, m, flag;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_USER_COMMAND);
-#endif
 #if RUSAGE_OLD == TRUE
 local_workload_counter=workload_counter;
 #endif
@@ -454,8 +442,6 @@ while(thread_command_flag[THREAD_USER_COMMAND] == THRFLAG_ACTIVE)
         break;
 
         case F10_KEY:
-        if(OSNUM == OS_FLAG_LINUX)
-          {
           internal_generator_noise++;
           if( (ui.rx_input_mode&DWORD_INPUT) == 0)
             {
@@ -467,7 +453,6 @@ while(thread_command_flag[THREAD_USER_COMMAND] == THRFLAG_ACTIVE)
             if(internal_generator_noise > 24)internal_generator_noise=0;
             }
           clear_lines(0,0);
-          }
         break;
 
         case SHIFT_F3_KEY:
@@ -1090,10 +1075,6 @@ if(  (lir_inkey >=  '.' && lir_inkey <= '9') ||
      lir_inkey == '_' || 
      lir_inkey == '-' || 
      lir_inkey == '+' || 
-#if(OSNUM == OS_FLAG_WINDOWS)
-     lir_inkey == ':' || 
-     lir_inkey == '\\' || 
-#endif
      (lir_inkey >= 'a' && lir_inkey <= 'z'))
   {
   name[len]=lir_inkey;

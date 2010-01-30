@@ -16,24 +16,22 @@
 #include <string.h>
 #include <pthread.h>
 #include <semaphore.h>
-#include "globdef.h"
-#include "uidef.h"
-#include "sigdef.h"
-#include "fft1def.h"
-#include "fft2def.h" 
-#include "fft3def.h"
-#include "conf.h"
-#include "lconf.h"
-#include "screendef.h"
-#include "sdrdef.h"
-#include "vernr.h"
-#include "thrdef.h"
-#include "hwaredef.h"
-#include "rusage.h"
-#include "ldef.h"
-#include "txdef.h"
-#include "options.h"
-#include "keyboard_def.h"
+#include <globdef.h>
+#include <uidef.h>
+#include <sigdef.h>
+#include <fft1def.h>
+#include <fft2def.h> 
+#include <fft3def.h>
+#include <screendef.h>
+#include <sdrdef.h>
+#include <vernr.h>
+#include <thrdef.h>
+#include <hwaredef.h>
+#include <rusage.h>
+#include <ldef.h>
+#include <txdef.h>
+#include <options.h>
+#include <keyboard_def.h>
 
 #define ABOVE_MAX_SPEED 768000
 #define MAX_COLUMN 80
@@ -993,18 +991,11 @@ double dt1, read_start_time,total_reads;
 double total_time1, total_time2;
 short int *rxin_isho2;
 int *rxin_int, *rxin_int2;
-#ifdef ALSA_PRESENT
 int err;
 char s[40];
-#endif
 int i;
 int timing_loop_counter,timing_loop_counter_max,initial_skip_flag;
-#if OSNUM == OS_FLAG_LINUX
 clear_thread_times(THREAD_RX_ADINPUT);
-#endif
-#if RUSAGE_OLD == TRUE
-local_workload_counter=workload_counter;
-#endif
 rxin_local_workload_reset=workload_reset_flag;
 timing_loop_counter_max=interrupt_rate;
 timing_loop_counter=2.5*timing_loop_counter_max;

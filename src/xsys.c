@@ -1,18 +1,15 @@
-
-
 #include <semaphore.h>
 #include <pthread.h>
 #include <ctype.h>
 #include <X11/cursorfont.h>
 #include <X11/Xutil.h>
-#include "globdef.h"
-#include "thrdef.h"
-#include "uidef.h"
-#include "screendef.h"
-#include "lconf.h"
-#include "xdef.h"
-#include "keyboard_def.h"
-#include "vernr.h"
+#include <globdef.h>
+#include <thrdef.h>
+#include <uidef.h>
+#include <screendef.h>
+#include <xdef.h>
+#include <keyboard_def.h>
+#include <vernr.h>
 
 #if SHM_INSTALLED == 1
 #include <X11/extensions/XShm.h>
