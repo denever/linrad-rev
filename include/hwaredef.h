@@ -7,9 +7,6 @@ void set_hardware_rx_frequency(void);
 void set_hardware_tx_frequency(void);
 void hware_hand_key(void);
 
-
-
-
 extern int hware_flag;
 extern char hware_error_flag;
 extern double hware_time;
@@ -25,16 +22,7 @@ extern int perseus_nco_counter;
 extern int fg_new_band;
 extern int fg_old_band;
 
-#if (LUSERS_DEFINES_PRESENT == 1 && OSNUM == OS_FLAG_LINUX)
 #include "users_hwaredef.h"
-#else
-#if (WUSERS_DEFINES_PRESENT == 1 && OSNUM == OS_FLAG_WINDOWS)
-#include "wusers_hwaredef.h"
-#else
-
-
-
-
 
 // Give each hardware unit its own unique number.
 // With few units, make these numbers powers of two to make
