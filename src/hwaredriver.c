@@ -1,4 +1,3 @@
-
 #include <ctype.h>
 #include <globdef.h>
 #include <uidef.h>
@@ -29,7 +28,7 @@ int perseus_nco_counter;
 #include <semaphore.h>
 #include <ldef.h>
 extern int serport;
-#include "users_hwaredriver.c"
+// #include "users_hwaredriver.c"
 
 void mouse_on_users_graph(void){}
 void init_users_control_window(void){}
@@ -70,6 +69,3 @@ else
 }
 
 #include "wse_sdrxx.c"
-
-#endif
-#endif
