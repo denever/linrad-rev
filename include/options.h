@@ -14,17 +14,11 @@
 // GIFDIR is where screen dumps are saved
 // WAVDIR is where output audio files are saved
 // RAWDIR is where input raw data files are saved
-#if OSNUM == OS_FLAG_LINUX
+
 #define GIFDIR "/home/linrad_data/"
 #define WAVDIR "/home/linrad_data/"
 #define RAWDIR "/home/linrad_data/"
-#endif
 
-#if OSNUM == OS_FLAG_WINDOWS
-#define GIFDIR "C:\\linrad_data\\"
-#define WAVDIR "C:\\linrad_data\\"
-#define RAWDIR "C:\\linrad_data\\"
-#endif
 // ************************************************************
 //               ----   Configuration   ----
 // The coherent graph which also contains the S-meter is rectangular
