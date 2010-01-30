@@ -24,7 +24,6 @@
 
 
 #include <globdef.h>
-#include <lconf.h>
 #include <thrdef.h>
 #include <ldef.h>
 #include <uidef.h>
