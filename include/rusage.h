@@ -3,9 +3,6 @@
 // undefined. (FreeBSD is also undefined.)
 //  #define RUSAGE_OLD 1
 //#else
-  #if OSNUM == OS_FLAG_LINUX
-    #define RUSAGE_OLD 0
-  #else
-    #define RUSAGE_OLD 0
-  #endif
+   #define RUSAGE_OLD 0
+
 //#endif
