@@ -22,7 +22,7 @@ extern int perseus_nco_counter;
 extern int fg_new_band;
 extern int fg_old_band;
 
-#include "users_hwaredef.h"
+//#include "users_hwaredef.h"
 
 // Give each hardware unit its own unique number.
 // With few units, make these numbers powers of two to make
@@ -121,9 +121,5 @@ extern int fg_old_band;
 #define HWARE_DATA BIT3
 #define HWARE_RXTX BIT1
 #define HWARE_MORSE_KEY BIT4
-
-
-#endif
-#endif
 
 #endif
