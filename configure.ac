@@ -9,6 +9,7 @@ AM_INIT_AUTOMAKE([dist-bzip2])
 
 # Checks for programs.
 AC_PROG_CXX
+AM_PROG_CC_C_O
 AC_PROG_INSTALL
 
 # Checks for header files.
@@ -27,7 +28,7 @@ AC_C_CONST
 AC_C_INLINE
 
 # Checks for NASM
-AC_PATH_PROG(NASM, nasm)
+AC_CHECK_PROG([NASM], [nasm], [nasm])
 
 # Sets variables for LIBS
 
