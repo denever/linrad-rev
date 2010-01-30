@@ -1,6 +1,8 @@
 #ifndef LDEF_H
 #define LDEF_H
 
+#include <linux/soundcard.h>
+
 extern pthread_mutex_t parport_lock;
 extern char uninit_mem_end;
 extern int uninit_mem_begin;
