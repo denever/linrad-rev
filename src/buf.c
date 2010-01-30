@@ -1,17 +1,15 @@
-    
-
 #include <unistd.h>
 #include <string.h>
-#include "globdef.h"
-#include "uidef.h"
-#include "fft1def.h"
-#include "fft2def.h"
-#include "fft3def.h"
-#include "screendef.h"
-#include "seldef.h"
-#include "blnkdef.h"
-#include "sigdef.h"
-#include "hwaredef.h"
+#include <globdef.h>
+#include <uidef.h>
+#include <fft1def.h>
+#include <fft2def.h>
+#include <fft3def.h>
+#include <screendef.h>
+#include <seldef.h>
+#include <blnkdef.h>
+#include <sigdef.h>
+#include <hwaredef.h>
 
 #define TIMF3_OSCILLOSCOPE_RATE 2
 
