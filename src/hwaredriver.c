@@ -1,15 +1,14 @@
 
 #include <ctype.h>
-#include "globdef.h"
-#include "uidef.h"
-#include "hwaredef.h"
-#include "fft1def.h"
-#include "screendef.h"
-#include "seldef.h"
-#include "sdrdef.h"
-#include "thrdef.h"
-#include "conf.h"
-#include "txdef.h"
+#include <globdef.h>
+#include <uidef.h>
+#include <hwaredef.h>
+#include <fft1def.h>
+#include <screendef.h>
+#include <seldef.h>
+#include <sdrdef.h>
+#include <thrdef.h>
+#include <txdef.h>
 
 int hware_flag;
 int fg_new_band;
@@ -27,19 +26,10 @@ int sdr14_nco_counter;
 int perseus_att_counter;
 int perseus_nco_counter;
 
-
-#if (LUSERS_ROUTINES_PRESENT == 1 && OSNUM == OS_FLAG_LINUX)
 #include <semaphore.h>
-#include "lconf.h"
-#include "ldef.h"
+#include <ldef.h>
 extern int serport;
 #include "users_hwaredriver.c"
-#else
-#if (WUSERS_ROUTINES_PRESENT == 1 && OSNUM == OS_FLAG_WINDOWS)
-#include "windef.h"
-extern HANDLE serport;
-#include "wusers_hwaredriver.c"
-#else
 
 void mouse_on_users_graph(void){}
 void init_users_control_window(void){}
