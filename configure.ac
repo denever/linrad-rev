@@ -14,8 +14,8 @@ AC_PROG_INSTALL
 # Checks for header files.
 AC_HEADER_STDC
 
-# Checks for libraries: libasound2, libx11, libxext
-
+# Checks for libraries: libasound2, libx11, libxext, libxproto
+# On Debian: libasound2-dev, libx11-dev, x11proto-core-dev
 PKG_CHECK_MODULES([ALSA], [alsa >= 1.0])
 PKG_CHECK_MODULES([X11], [x11 >= 1.3])
 PKG_CHECK_MODULES([XEXT], [xext >= 1.1])
