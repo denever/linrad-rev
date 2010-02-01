@@ -10,6 +10,9 @@
 // to recover from the error, and to continue processing without further
 // actions.
 //
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <unistd.h>
 #include <fcntl.h> 
@@ -36,15 +39,9 @@
 #define ABOVE_MAX_SPEED 768000
 #define MAX_COLUMN 80
 
-
 #define SDR14_DEVICE_DRIVER "/dev/linrad_ft245"
-#if SND_DEV == 1
 #define DEVNAME_BASE "/dev/dsp"
 #define DEVNAME_SIZE 12
-#else
-#define DEVNAME_BASE "/dev/sound/dsp"
-#define DEVNAME_SIZE 18
-#endif
 #define DEVFLAG_R 1
 #define DEVFLAG_W 2
 #define DEVFLAG_RW 4
@@ -91,7 +88,7 @@ int low_speeds[MAX_LOWSPEED]={1,5000,6000,8000,11025,16000,
 
 int zrw; // untested return value for OSS
 
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 // alsa definitions start
 #include <alsa/asoundlib.h>
 
@@ -958,12 +955,12 @@ sdr=-1;
 
 void lir_tx_adread(char *buf)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 char s[40];
 #endif
 unsigned int nread;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   err=alsaread(tx_ad_handle, buf, (snd_pcm_uframes_t) txad.block_frames);
@@ -1052,7 +1049,7 @@ while(thread_command_flag[THREAD_RX_ADINPUT] == THRFLAG_ACTIVE)
   timf1p_pa=(timf1p_pa+rxad.block_bytes)&timf1_bytemask;
   if(ui.rx_addev_no < 256)
     {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
     if(ui.use_alsa)
       {
       err=alsaread(rx_ad_handle, (char*)rxin_isho, rxad.block_frames);
@@ -1169,7 +1166,7 @@ close_tx_output();
 void thread_test_rxad(void)
 {
 char *buf;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 rxad.block_frames=ui.rx_ad_speed/100;
@@ -1191,7 +1188,7 @@ while(!kill_all_flag &&
   {
   if(ui.rx_addev_no < 256)
     {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
     if(ui.use_alsa)
       {
       err=alsaread(rx_ad_handle, buf, rxad.block_frames);
@@ -1216,7 +1213,7 @@ close_rx_sndin();
 
 unsigned int lir_tx_output_samples(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 char s[40];
 snd_pcm_sframes_t frame_avail;
@@ -1262,7 +1259,7 @@ return txda.buffer_frames-tx_da_info.bytes/txda.frame;
 
 int lir_tx_input_samples(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 char s[40];
 snd_pcm_sframes_t frame_avail;
@@ -1308,7 +1305,7 @@ else
 
 int lir_rx_output_bytes(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 if(ui.use_alsa)
   {
@@ -1324,14 +1321,14 @@ return rx_da_info.bytes;
 
 int make_da_wts(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 int i;
 // Returns the number of samples or frames ( not bytes !) written to device driver but not yet sent to the speaker.
 i=0;
 buftest:;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   if((err=alsa_getospace_rxda())<0)
@@ -1365,7 +1362,7 @@ return i;
 
 void err_restart_rxda(int errcod)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 char s[40];
 #endif
@@ -1376,7 +1373,7 @@ close_rx_sndout();
 open_rx_sndout();
 if(kill_all_flag) return;
 for(i=0; i<rx_daout_block; i++)rx_da_wrbuf[i]=0;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   err=snd_pcm_writei(rx_da_handle, rx_da_wrbuf,rxda.block_frames);
@@ -1417,7 +1414,7 @@ else
 
 void lir_empty_da_device_buffer(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 char s[40];
 #endif
@@ -1427,7 +1424,7 @@ for(i=0; i<rx_daout_block; i++)rx_da_wrbuf[i]=0;
 if(rx_audio_in == rx_audio_out && 
                    rx_input_thread == THREAD_RX_ADINPUT)return;
 if(tx_audio_in == rx_audio_out)return;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   if((err=alsa_getospace_rxda())<0)
@@ -1489,7 +1486,7 @@ else
 
 void lir_tx_dawrite(char *buf)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 char s[40];
 if(ui.use_alsa)
@@ -1530,7 +1527,7 @@ else
 
 void lir_rx_dawrite(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 char s[40];
 #endif
@@ -1538,7 +1535,7 @@ int i;
 float t1;
 i=0;
 buftest:;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   if((err=alsa_getospace_rxda())<0)
@@ -1573,7 +1570,7 @@ if(rx_da_info.bytes < (int)(rxda.buffer_bytes>>3))
   err_restart_rxda(23855);
   if(kill_all_flag) return;
   }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   err=snd_pcm_writei(rx_da_handle, rx_da_wrbuf,rxda.block_frames);
@@ -1638,7 +1635,7 @@ else
 
 void close_rx_sndin(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 if(rx_audio_in != -1)
@@ -1647,7 +1644,7 @@ if(rx_audio_in != -1)
     {
     close_rx_sndout();
     }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     err=snd_pcm_close(rx_ad_handle);
@@ -1676,7 +1673,7 @@ rx_audio_in=-1;
 
 void open_tx_input(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 unsigned int val;
 static snd_pcm_format_t format;
 snd_pcm_hw_params_t *hw_ad_params;
@@ -1703,7 +1700,7 @@ if(ui.tx_addev_no == ui.rx_dadev_no && ui.rx_damode == O_RDWR)
   tx_audio_in=rx_audio_out; 
   return;
   }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
  char tx_input_plughw_pcm_name  [16];
@@ -1908,7 +1905,7 @@ else
 
 void close_tx_input(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 if(tx_audio_in == -1)return;
@@ -1917,7 +1914,7 @@ if(ui.tx_addev_no == ui.rx_dadev_no && ui.rx_damode == O_RDWR)
   tx_audio_in=-1; 
   return;
   }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   err=snd_pcm_close(tx_ad_handle);
@@ -1937,7 +1934,7 @@ else
 
 void open_tx_output(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 unsigned int val;
 static snd_pcm_format_t format;
 snd_pcm_hw_params_t *hw_da_params;
@@ -1956,7 +1953,7 @@ while(txda.interrupt_rate > ui.max_dma_rate)
   txda.block_frames*=2;
   }
 DEB"\nTXout%sDesired %f",intrate_string,txda.interrupt_rate);
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   char tx_out_plughw_pcm_name[16];
@@ -2198,7 +2195,7 @@ txda.buffer_frames=txda.buffer_bytes/txda.frame;
 txda.block_bytes=tx_da_info.fragsize; 
 txda.block_frames=txda.block_bytes/txda.frame; 
 txda.interrupt_rate=(float)(ui.tx_da_speed)/txda.block_frames;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 ok_exit:;
 #endif
 DEB"\nTXout%sActual %f",intrate_string,txda.interrupt_rate);
@@ -2206,7 +2203,7 @@ DEB"\nTXout%sActual %f",intrate_string,txda.interrupt_rate);
 
 void close_tx_output(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 if(tx_audio_out == -1)return;
@@ -2215,7 +2212,7 @@ if(ui.tx_dadev_no == ui.rx_addev_no && ui.rx_admode == O_RDWR)
   tx_audio_out=-1; 
   return;
   }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   snd_pcm_drop(tx_da_handle);
@@ -2253,14 +2250,14 @@ return frag;
 
 void close_rx_sndout(void)
 {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 if(rx_audio_out == -1)
   {
   return;
   }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   snd_pcm_drop(rx_da_handle);
@@ -2292,7 +2289,7 @@ void open_rx_sndin(void)
 char ss[sizeof(DEVNAME_BASE)+2];
 float t1;
 int i, j, frag;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 snd_pcm_format_t format;
 snd_pcm_hw_params_t *hw_ad_params;
 int err, resample;
@@ -2305,7 +2302,7 @@ if( (rx_audio_in) != -1)
   lirerr(1000);
   return;
   }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 if(ui.use_alsa)
   {
   char rx_sndin_plughw_pcm_name  [16];
@@ -2608,7 +2605,7 @@ void open_rx_sndout(void)
 {
 char ss[sizeof(DEVNAME_BASE)+2];
 int i, j; 
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 snd_pcm_hw_params_t *hw_da_params;
 static snd_pcm_format_t format;
 int err, resample, dir;
@@ -2632,7 +2629,7 @@ if(ui.rx_dadev_no == -1)
       lirerr(9865);
       return;
       }
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 //*********************************************************************
 //********************  OPEN ALSA PLAYBACK DEVICE *********************
 //*********************************************************************
@@ -2703,7 +2700,7 @@ if(ui.rx_addev_no == ui.rx_dadev_no &&
   }
 else
   {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     char rx_out_plughw_pcm_name  [16];
@@ -2749,7 +2746,7 @@ set_da:;
 // make the minimum block 32 bytes in accordance with the minimum
 // fragment size of OSS (frag=4)
   if(rx_daout_block < 32)rx_daout_block=32;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
 //*********************************************************************
@@ -2992,7 +2989,7 @@ if(rx_da_info.fragsize != rx_daout_block)
     return;
     }
   } 
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 alsacont:;  
 #endif
 rx_output_blockrate=(float)(rxda.frame*
@@ -4181,7 +4178,7 @@ int rdwr_max_speed;
 int line, refline, column;
 char s[256];
 char color;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 memset(blanks, ' ',58);
@@ -4212,7 +4209,7 @@ begin_rx_set_io:;
 // to toggle between alsa-oss and native ALSA in case there is a choice.
 // Set the previous selection non-valid in case the system is changed.
 clear_screen();
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 lir_text(0,0,"The current setting is:");
 lir_text(0,1,"This system can be set up for native ALSA or for alsa-oss.");
 i=ui.use_alsa;
@@ -4301,7 +4298,7 @@ else
       }
     else
       {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
       if(ui.use_alsa)
         {
         err=alsa_get_dev_names (ui.rx_addev_no);
@@ -4406,7 +4403,7 @@ if(ui.rx_dadev_no <0)
   }
 else
   {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     err=alsa_get_dev_names (ui.rx_dadev_no);
@@ -4528,7 +4525,7 @@ switch(lir_inkey)
   SNDLOG"%s\n",s);
   lir_text(0,line,s);
   line++;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     ui.rx_addev_no=select_alsadev(SND_PCM_STREAM_CAPTURE, &line);
@@ -4860,7 +4857,7 @@ chsel:;
   SNDLOG"%s\n",s);
   lir_text(0,line,s);
   line++;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     ui.rx_dadev_no=select_alsadev(SND_PCM_STREAM_PLAYBACK, &line);
@@ -5062,7 +5059,7 @@ void set_tx_io(void)
 {  
 char *tmptxt;
 int i, j, k;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 int err;
 #endif
 int line;
@@ -5102,7 +5099,7 @@ write_log=TRUE;
 begin_tx_set_io:;
 clear_screen();
 if(kill_all_flag)goto set_tx_io_errexit;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
 lir_text(0,0,"The current setting is:");
 lir_text(0,1,"Use RX setup menu to toggle between native ALSA and alsa-oss.");
 i=ui.use_alsa;
@@ -5140,7 +5137,7 @@ if(ui.tx_dadev_no == -1)
   }
 else
   {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     err=alsa_get_dev_names (ui.tx_dadev_no);
@@ -5219,7 +5216,7 @@ if(ui.tx_addev_no == -1)
   }
 else
   {
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     err=alsa_get_dev_names (ui.tx_addev_no);
@@ -5307,7 +5304,7 @@ switch(lir_inkey)
   SNDLOG"%s\n",s);
   lir_text(0,line,s);
   line++;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     ui.tx_dadev_no=select_alsadev(SND_PCM_STREAM_PLAYBACK, &line);
@@ -5448,7 +5445,7 @@ set_txout_exit:;
   SNDLOG"%s\n",s);
   lir_text(0,line,s);
   line++;
-#ifdef ALSA_PRESENT
+#ifdef HAVE_ALSA
   if(ui.use_alsa)
     {
     ui.tx_addev_no=select_alsadev(SND_PCM_STREAM_CAPTURE, &line);
