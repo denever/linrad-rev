@@ -10,6 +10,7 @@
 // to recover from the error, and to continue processing without further
 // actions.
 //
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif

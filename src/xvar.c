@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <pthread.h>
 #include <semaphore.h>
 #include <X11/cursorfont.h>
@@ -7,7 +11,7 @@
 #include <xdef.h>
 #include <ldef.h>
 
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
 #include <X11/extensions/XShm.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>

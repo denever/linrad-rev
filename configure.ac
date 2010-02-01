@@ -19,8 +19,8 @@ AC_HEADER_STDC
 # On Debian: libasound2-dev, libx11-dev, x11proto-core-dev
 PKG_CHECK_MODULES([ALSA], [alsa >= 1.0], AC_DEFINE([HAVE_ALSA], [1], ['If alsa is present']))
 PKG_CHECK_MODULES([X11], [x11 >= 1.3])
-PKG_CHECK_MODULES([XEXT], [xext >= 1.1])
-PKG_CHECK_MODULES([XPROTO], [xproto >= 7.0])
+PKG_CHECK_MODULES([XEXT], [xext >= 1.1], AC_DEFINE([HAVE_SHM], [1], ['If shm is installed']))
+PKG_CHECK_MODULES([XPROTO], [xproto >= 7.0], AC_DEFINE([HAVE_SHM], [1], ['If shm is installed']))
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
