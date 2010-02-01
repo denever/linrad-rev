@@ -1,6 +1,8 @@
 // For help on X11 give command: "man X Interface"
 // Event masks and event definitions are in /usr/X11R6/include/X11/X.h
-
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,7 +24,7 @@
 #include <xdef.h>
 #include <ldef.h>
 
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
 #include <X11/extensions/XShm.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -106,7 +108,7 @@ if (xdis == NULL)
   }
 ui_setup();
 X11_accesstype=X11_STANDARD;
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
 // test if the X11 server supports MIT-SHM
 if(ui.shm_mode != 0)
   {
@@ -352,7 +354,7 @@ if(X11_accesstype==X11_STANDARD)
   ximage=XCreateImage(xdis, visual, color_depth, ZPixmap, 0, 
           (char*)(mempix_char), screen_width, screen_height+1, bitmap_pad, 0);
   }
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
 else
   { 
   shminfo=(XShmSegmentInfo *)malloc(sizeof(XShmSegmentInfo));
@@ -585,7 +587,7 @@ if(X11_accesstype==X11_STANDARD)
   {
   free(mempix_char);
   }
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
 else
   { 
   XShmDetach(xdis,shminfo);
@@ -598,7 +600,7 @@ exitmain:;
 users_close_devices();
 lir_close_serport();
 free(vga_font);
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
 shm_error:;
 #endif
 XCloseDisplay(xdis);
@@ -646,7 +648,7 @@ while(process_event_flag)
         {
         XPutImage(xdis, xwin, xgc, ximage,0,0,0,0, screen_width, screen_height);
         }
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
       else
         { 
         XShmPutImage (xdis, xwin, xgc, ximage, 0, 0, 0, 0, screen_width, screen_height, FALSE);

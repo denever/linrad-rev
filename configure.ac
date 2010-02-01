@@ -17,10 +17,10 @@ AC_HEADER_STDC
 
 # Checks for libraries: libasound2, libx11, libxext, libxproto
 # On Debian: libasound2-dev, libx11-dev, x11proto-core-dev
-PKG_CHECK_MODULES([ALSA], [alsa >= 1.0])
+PKG_CHECK_MODULES([ALSA], [alsa >= 1.0], AC_DEFINE([HAVE_ALSA], [1], ['If alsa is present']))
 PKG_CHECK_MODULES([X11], [x11 >= 1.3])
-PKG_CHECK_MODULES([XEXT], [xext >= 1.1])
-PKG_CHECK_MODULES([XPROTO], [xproto >= 7.0])
+PKG_CHECK_MODULES([XEXT], [xext >= 1.1], AC_DEFINE([HAVE_SHM], [1], ['If shm is installed']))
+PKG_CHECK_MODULES([XPROTO], [xproto >= 7.0], AC_DEFINE([HAVE_SHM], [1], ['If shm is installed']))
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -29,7 +29,10 @@ AC_C_INLINE
 
 # Checks for NASM
 AC_CHECK_PROG([NASM], [nasm], [nasm])
-
+#AC_ARG_VAR([NASM],['NASM Assembler'])
+if test -z "$NASM"; then
+   AC_MSG_ERROR('Missing NASM assembler. Please install')
+fi
 # Sets variables for LIBS
 
 AC_SUBST(ALSA_LIBS)

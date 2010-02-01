@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <semaphore.h>
 #include <pthread.h>
 #include <ctype.h>
@@ -11,7 +15,7 @@
 #include <keyboard_def.h>
 #include <vernr.h>
 
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
 #include <X11/extensions/XShm.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
@@ -139,7 +143,7 @@ gtpin:;
     {
     ui.parport_pin=0;
     }
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
   sprintf(s,"The libraries for MIT-SHM are installed. Use SHM (Y/N) ?");
 use_shm:
   if(wn==0)
@@ -918,7 +922,7 @@ if(last_mempix >= first_mempix )
       {
       XPutImage(xdis, xwin, xgc, ximage, 0, l1, 0, l1, screen_width, h1);
       }
-#if SHM_INSTALLED == 1
+#ifdef HAVE_SHM
     else
       {
       XShmPutImage(xdis, xwin, xgc, ximage, 0, l1, 0, l1, screen_width, h1,FALSE);
